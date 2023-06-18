@@ -1,12 +1,8 @@
 ﻿namespace Voxatron_Engine;
 
-class Program
+public class Program
 {
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
-        Window window = new();
-        
-        window.Create();
-        window.Run();
     }
 }

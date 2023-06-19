@@ -1,7 +1,5 @@
 ﻿using Raylib_cs;
-using Voxatron_Engine.Render;
 using Voxatron_Engine.Scene.Entitys._2D;
-using Voxatron_Engine.Tool;
 
 namespace Voxatron.Scene;
 

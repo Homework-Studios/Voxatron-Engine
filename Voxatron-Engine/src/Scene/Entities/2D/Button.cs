@@ -2,6 +2,7 @@
 using Raylib_cs;
 using Voxatron_Engine.Render;
 using Voxatron_Engine.Render.Elements._2D;
+using Voxatron_Engine.Tool;
 
 namespace Voxatron_Engine.Scene.Entities._2D;
 
@@ -20,7 +21,7 @@ public class Button : Entity
 
     public Button(Vector2 position, Vector2 size, Color color, Color hoverColor, Color textColor, string text)
     {
-        _position = position;
+        _position = ScreenUtil.ScreenPercent(position);
         
         // the * 2 is because the size is the half size and we have to double it to get the full size
         _size = size * 2;
@@ -37,6 +38,13 @@ public class Button : Entity
     {
         renderer.Add(_outlineElement);
         renderer.Add(_textElement);
+        return true;
+    }
+
+    public override bool Remove(Renderer renderer)
+    {
+        renderer.Remove(_outlineElement);
+        renderer.Remove(_textElement);
         return true;
     }
 

@@ -146,39 +146,32 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\timon\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\j.windmann\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\C#\\Voxatron-Engine\\Voxatron\\Voxatron.csproj",
+      "projectUniqueName": "C:\\Users\\j.windmann\\Desktop\\Voxatron-Engine\\Voxatron\\Voxatron.csproj",
       "projectName": "Voxatron",
-      "projectPath": "D:\\C#\\Voxatron-Engine\\Voxatron\\Voxatron.csproj",
-      "packagesPath": "C:\\Users\\timon\\.nuget\\packages\\",
-      "outputPath": "D:\\C#\\Voxatron-Engine\\Voxatron\\obj\\",
+      "projectPath": "C:\\Users\\j.windmann\\Desktop\\Voxatron-Engine\\Voxatron\\Voxatron.csproj",
+      "packagesPath": "C:\\Users\\j.windmann\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\j.windmann\\Desktop\\Voxatron-Engine\\Voxatron\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\timon\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\j.windmann\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "D:\\C#\\Voxatron-Engine\\Voxatron-Engine\\Voxatron-Engine.csproj": {
-              "projectPath": "D:\\C#\\Voxatron-Engine\\Voxatron-Engine\\Voxatron-Engine.csproj"
+            "C:\\Users\\j.windmann\\Desktop\\Voxatron-Engine\\Voxatron-Engine\\Voxatron-Engine.csproj": {
+              "projectPath": "C:\\Users\\j.windmann\\Desktop\\Voxatron-Engine\\Voxatron-Engine\\Voxatron-Engine.csproj"
             }
           }
         }
@@ -208,7 +201,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Users\\j.windmann\\.dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
       }
     }
   }

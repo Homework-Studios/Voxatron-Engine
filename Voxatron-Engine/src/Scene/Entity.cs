@@ -6,6 +6,7 @@ public abstract class Entity
 {
     protected Scene Scene = null!;
     public abstract bool Init(Renderer renderer);
+    public abstract bool Remove(Renderer renderer);
     public abstract bool Update();
     
     public void SetScene(Scene scene)

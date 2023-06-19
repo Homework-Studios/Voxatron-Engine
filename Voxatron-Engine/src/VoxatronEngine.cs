@@ -8,19 +8,21 @@ public class VoxatronEngine
 {
     private readonly Renderer _renderer;
     private Scene.Scene? _scene;
-
     private bool _shouldClose;
+    
+    public Random Random = new();
 
     public VoxatronEngine()
     {
+        SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT);
+        SetConfigFlags(ConfigFlags.FLAG_VSYNC_HINT);
+        
         InitWindow(GetScreenWidth(), GetScreenHeight(), "Unknown Title");
         ToggleFullscreen();
         SetTargetFPS(60);
 
         _renderer = new Renderer();
     }
-
-    
     
     public void Run()
     {

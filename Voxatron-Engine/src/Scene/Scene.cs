@@ -13,7 +13,7 @@ public abstract class Scene
 
     protected void UpdateEntities()
     {
-        foreach (var entity in _entities.Where(entity => !entity.Update()))
+        foreach (var entity in _entities.ToArray().Where(entity => !entity.Update()))
         {
             throw new Exception("Entity failed to update. Entity: " + entity.GetType().Name + "");
         }
@@ -29,6 +29,7 @@ public abstract class Scene
     public void Remove(Entity entity)
     {
         _entities.Remove(entity);
+        entity.Remove(_renderer);
     }
     
     public void Clear()

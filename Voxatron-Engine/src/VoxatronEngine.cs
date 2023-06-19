@@ -9,7 +9,7 @@ public class VoxatronEngine
     private readonly Renderer _renderer;
     private Scene.Scene? _scene;
 
-    private bool _shouldClose = false;
+    private bool _shouldClose;
 
     public VoxatronEngine()
     {

@@ -7,7 +7,6 @@ using Voxatron_Engine.Tool;
 namespace Voxatron_Engine.Scene.Entities._2D
 {
     
-    // TODO: Make Better Look
     public class Toggle : Entity
     {
         private readonly Vector2 _position;
@@ -48,8 +47,10 @@ namespace Voxatron_Engine.Scene.Entities._2D
             return true;
         }
 
+        // TODO: Make it look better and more responsive
         public override bool Update()
         {
+            
             bool isHovering = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(),
                 new Rectangle(_position.X - _size.X / 2, _position.Y - _size.Y / 2, _size.X, _size.Y));
 

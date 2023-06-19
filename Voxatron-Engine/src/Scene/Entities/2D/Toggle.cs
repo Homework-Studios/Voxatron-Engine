@@ -53,35 +53,26 @@ namespace Voxatron_Engine.Scene.Entities._2D
             bool isHovering = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(),
                 new Rectangle(_position.X - _size.X / 2, _position.Y - _size.Y / 2, _size.X, _size.Y));
 
-            bool isClicked = isHovering && Raylib.IsMouseButtonDown(MouseButton.MOUSE_LEFT_BUTTON);
-            bool isReleased = isHovering && Raylib.IsMouseButtonReleased(MouseButton.MOUSE_LEFT_BUTTON);
+            // var isClicked = isHovering && Raylib.IsMouseButtonDown(MouseButton.MOUSE_LEFT_BUTTON);
+            var isReleased = isHovering && Raylib.IsMouseButtonReleased(MouseButton.MOUSE_LEFT_BUTTON);
 
-            if (isHovering)
+            _outlineElement.Color = isHovering ? _hoverColor : _color;
+
+            if (!isReleased) return true;
+            _isToggled = !_isToggled;
+
+            if (_isToggled)
             {
-                _outlineElement.Color = _hoverColor;
+                _outlineElement.Position = _position - _size / 2 * PressedShrink;
+                _outlineElement.Size = _size * PressedShrink;
             }
             else
             {
-                _outlineElement.Color = _color;
+                _outlineElement.Position = _position - _size / 2;
+                _outlineElement.Size = _size;
             }
 
-            if (isReleased)
-            {
-                _isToggled = !_isToggled;
-
-                if (_isToggled)
-                {
-                    _outlineElement.Position = _position - _size / 2 * PressedShrink;
-                    _outlineElement.Size = _size * PressedShrink;
-                }
-                else
-                {
-                    _outlineElement.Position = _position - _size / 2;
-                    _outlineElement.Size = _size;
-                }
-
-                ToggleStateChanged?.Invoke(_isToggled);
-            }
+            ToggleStateChanged?.Invoke(_isToggled);
 
             return true;
         }

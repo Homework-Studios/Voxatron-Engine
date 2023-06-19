@@ -1,7 +1,7 @@
 ﻿using Voxatron_Engine;
 using Voxatron.Scene;
 
-const bool testMode = false;
+const bool testMode = true;
 
 VoxatronEngine engine = new("Voxatron");
 

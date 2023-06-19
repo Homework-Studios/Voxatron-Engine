@@ -19,7 +19,7 @@ public class Slider : Entity
 
     public Slider(Vector2 position, Vector2 size, Color color, Color hoverColor, float sliderThickness, float value)
     {
-        _position = ScreenUtil.ScreenPercent(position);
+        _position = ScreenUtil.ScreenPercent(position with{X = position.X - .75f});
         _size = size * 2;
         _color = color;
         _hoverColor = hoverColor;
@@ -27,7 +27,8 @@ public class Slider : Entity
 
         var pointSize = new Vector2(_size.X / 5, _size.Y / 3);
         _slider = new BoxElement(_position - size / 2, _size with { Y = sliderThickness }, _color, false);
-        _sliderPoint = new BoxElement(_position - size / 2 - pointSize / 3, pointSize, _color);
+        _sliderPoint = new BoxElement(_position - size / 2 - pointSize / 3 + size with { Y = 0 } / 2, pointSize,
+            _color);
     }
 
     public override bool Init(Renderer renderer)

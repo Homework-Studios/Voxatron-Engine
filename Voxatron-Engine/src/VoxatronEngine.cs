@@ -6,8 +6,8 @@ namespace Voxatron_Engine;
 
 public class VoxatronEngine
 {
-    Renderer _renderer;
-    private Scene.Scene? _scene = null;
+    private readonly Renderer _renderer;
+    private Scene.Scene? _scene;
 
     public VoxatronEngine()
     {
@@ -15,7 +15,7 @@ public class VoxatronEngine
         ToggleFullscreen();
         SetTargetFPS(60);
 
-        _renderer = new();
+        _renderer = new Renderer();
     }
 
     
@@ -38,7 +38,7 @@ public class VoxatronEngine
         }
     }
     
-    public void Destroy()
+    public void Shutdown()
     {
         CloseWindow();
         Environment.Exit(0);

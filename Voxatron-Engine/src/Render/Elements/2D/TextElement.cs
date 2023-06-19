@@ -5,18 +5,17 @@ namespace Voxatron_Engine.Render.Elements._2D;
 
 public class TextElement : Element
 {
-    
-    public string Text;
-    public Vector2 Position;
-    public Color Color;
-    public int FontSize;
+    private readonly string _text;
+    private readonly Vector2 _position;
+    private readonly Color _color;
+    private readonly int _fontSize;
     
     public TextElement(string text, Vector2 position, Color color, int fontSize)
     {
-        Text = text;
-        Position = position;
-        Color = color;
-        FontSize = fontSize;
+        _text = text;
+        _position = position;
+        _color = color;
+        _fontSize = fontSize;
     }
     
     public override bool Update()
@@ -28,7 +27,7 @@ public class TextElement : Element
     {
         // the origin in in the middle of the text
         // move the text back by half the width and half of the font size up
-        Raylib.DrawText(Text, (int)Position.X - Raylib.MeasureText(Text, FontSize) / 2, (int)Position.Y - FontSize / 2, FontSize, Color);
+        Raylib.DrawText(_text, (int)_position.X - Raylib.MeasureText(_text, _fontSize) / 2, (int)_position.Y - _fontSize / 2, _fontSize, _color);
         return true;
     }
 }

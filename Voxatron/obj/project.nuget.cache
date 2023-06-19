@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "+g5LoS5cdcpQZgcdD8yqsmBedN1+27iP69pwFmU0rbJ3MNJrby607Fc0KZWFtJhBGOZmmWNKH7MRgJ5w/8NyGg==",
+  "success": true,
+  "projectFilePath": "D:\\C#\\Voxatron-Engine\\Voxatron\\Voxatron.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\timon\\.nuget\\packages\\raylib-cs\\4.5.0.1\\raylib-cs.4.5.0.1.nupkg.sha512",
+    "C:\\Users\\timon\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}

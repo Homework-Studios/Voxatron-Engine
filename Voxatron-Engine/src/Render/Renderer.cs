@@ -2,11 +2,11 @@
 
 public class Renderer
 {
-    private List<Element> Elements = new();
+    private readonly List<Element> _elements = new();
     
     public void Update()
     {
-        foreach (Element element in Elements)
+        foreach (Element element in _elements)
         {
             if (!element.Update())
             {
@@ -17,7 +17,7 @@ public class Renderer
     
     public void Render()
     {
-        foreach (Element element in Elements)
+        foreach (Element element in _elements)
         {
             if (!element.Render())
             {
@@ -28,16 +28,16 @@ public class Renderer
     
     public void Add(Element element)
     {
-        Elements.Add(element);
+        _elements.Add(element);
     }
     
     public void Remove(Element element)
     {
-        Elements.Remove(element);
+        _elements.Remove(element);
     }
     
     public void Clear()
     {
-        Elements.Clear();
+        _elements.Clear();
     }
 }

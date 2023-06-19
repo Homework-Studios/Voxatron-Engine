@@ -4,7 +4,7 @@ namespace Voxatron_Engine.Scene;
 
 public abstract class Entity
 {
-    protected Scene Scene;
+    protected Scene Scene = null!;
     public abstract bool Init(Renderer renderer);
     public abstract bool Update();
     

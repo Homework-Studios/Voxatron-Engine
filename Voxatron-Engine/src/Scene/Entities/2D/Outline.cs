@@ -3,7 +3,7 @@ using Raylib_cs;
 using Voxatron_Engine.Render;
 using Voxatron_Engine.Render.Elements._2D;
 
-namespace Voxatron_Engine.Scene.Entitys._2D;
+namespace Voxatron_Engine.Scene.Entities._2D;
 
 public class Outline : Entity
 {

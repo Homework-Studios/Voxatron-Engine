@@ -5,9 +5,9 @@ namespace Voxatron_Engine.Render.Elements._2D;
 
 public class BoxOutlineElement : Element
 {
-    public Vector2 Position { get; set; }
-    public Vector2 Size { get; set; }
-    public Color Color { get; set; }
+    private Vector2 Position { get; set; }
+    private Vector2 Size { get; set; }
+    private Color Color { get; set; }
     
     public BoxOutlineElement(Vector2 position, Vector2 size, Color color)
     {

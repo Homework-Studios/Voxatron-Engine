@@ -4,39 +4,36 @@ namespace Voxatron_Engine.Scene;
 
 public abstract class Scene
 {
-    protected VoxatronEngine Engine;
-    protected Renderer Renderer;
-    public List<Entity> Entities = new();
+    protected VoxatronEngine Engine = null!;
+    private Renderer _renderer = null!;
+    private readonly List<Entity> _entities = new();
 
     public abstract void Init();
     public abstract void Update();
-    
-    public void UpdateEntities()
+
+    protected void UpdateEntities()
     {
-        foreach (Entity entity in Entities)
+        foreach (var entity in _entities.Where(entity => !entity.Update()))
         {
-            if (!entity.Update())
-            {
-                throw new Exception("Entity failed to update. Entity: " + entity.GetType().Name + "");
-            }
+            throw new Exception("Entity failed to update. Entity: " + entity.GetType().Name + "");
         }
     }
-    
-    public void Add(Entity entity)
+
+    protected void Add(Entity entity)
     {
-        Entities.Add(entity);
+        _entities.Add(entity);
         entity.SetScene(this);
-        entity.Init(Renderer);
+        entity.Init(_renderer);
     }
     
     public void Remove(Entity entity)
     {
-        Entities.Remove(entity);
+        _entities.Remove(entity);
     }
     
     public void Clear()
     {
-        Entities.Clear();
+        _entities.Clear();
     }
     
     public void SetEngine(VoxatronEngine engine)
@@ -46,6 +43,6 @@ public abstract class Scene
     
     public void SetRenderer(Renderer renderer)
     {
-        Renderer = renderer;
+        _renderer = renderer;
     }
 }

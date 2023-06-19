@@ -1,54 +1,49 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using Raylib_cs;
 using Voxatron_Engine.Render;
 using Voxatron_Engine.Render.Elements._2D;
 
-namespace Voxatron_Engine.Scene.Entitys._2D;
+namespace Voxatron_Engine.Scene.Entities._2D;
 
 public class Button : Entity
 {
-    public Vector2 Position;
-    public Vector2 Size;
-    public float PressedShrink = 0.95f;
-    public Color Color;
-    public Color HoverColor;
-    public Color TextColor;
-    public string Text;
+    private readonly Vector2 _position;
+    private readonly Vector2 _size;
+    private const float PressedShrink = 0.95f;
+    private readonly Color _color;
+    private readonly Color _hoverColor;
 
-    public BoxElement OutlineElement;
-    public TextElement TextElement;
+    private readonly BoxElement _outlineElement;
+    private readonly TextElement _textElement;
 
-    public event Action? ButtonClicked = null;
+    public event Action? ButtonClicked;
 
     public Button(Vector2 position, Vector2 size, Color color, Color hoverColor, Color textColor, string text)
     {
-        Position = position;
+        _position = position;
         
         // the * 2 is because the size is the half size and we have to double it to get the full size
-        Size = size * 2;
+        _size = size * 2;
         
-        Color = color;
-        HoverColor = hoverColor;
-        TextColor = textColor;
-        Text = text;
+        _color = color;
+        _hoverColor = hoverColor;
 
         // the position is the origin of the button and it is in the middle of the button and the button scales around it
-        OutlineElement = new BoxElement(Position - Size / 2, Size, Color);
-        TextElement = new TextElement(Text, Position, TextColor, 27);
+        _outlineElement = new BoxElement(_position - _size / 2, _size, _color);
+        _textElement = new TextElement(text, _position, textColor, 27);
     }
 
     public override bool Init(Renderer renderer)
     {
-        renderer.Add(OutlineElement);
-        renderer.Add(TextElement);
+        renderer.Add(_outlineElement);
+        renderer.Add(_textElement);
         return true;
     }
 
     public override bool Update()
     {
         // check if the mouse is over the button
-        bool isHovering = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(Position.X - Size.X / 2, Position.Y - Size.Y / 2, Size.X, Size.Y));
+        bool isHovering = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(_position.X - _size.X / 2, _position.Y - _size.Y / 2, _size.X, _size.Y));
 
         // if the left mouse button is pressed
         bool isClicked = isHovering && Raylib.IsMouseButtonDown(MouseButton.MOUSE_LEFT_BUTTON);
@@ -56,24 +51,24 @@ public class Button : Entity
 
         if (isHovering)
         {
-            OutlineElement.Color = HoverColor;
+            _outlineElement.Color = _hoverColor;
         }
         else
         {
-            OutlineElement.Color = Color;
+            _outlineElement.Color = _color;
         }
 
         if (isClicked)
         {
             // shrink the button
-            OutlineElement.Position = Position - Size / 2 * PressedShrink;
-            OutlineElement.Size = Size * PressedShrink;
+            _outlineElement.Position = _position - _size / 2 * PressedShrink;
+            _outlineElement.Size = _size * PressedShrink;
         }
         else
         {
             // reset the button
-            OutlineElement.Position = Position - Size / 2;
-            OutlineElement.Size = Size;
+            _outlineElement.Position = _position - _size / 2;
+            _outlineElement.Size = _size;
         }
 
         if (isReleased)

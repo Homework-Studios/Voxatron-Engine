@@ -20,7 +20,11 @@ public class TestScene : Voxatron_Engine.Scene.Scene
         };
         Add(popupButton);
         
-        Add(new Image(new Vector2(50, 50), "C:\\Users\\j.windmann\\Desktop\\Voxatron-Engine\\Voxatron\\Assets\\monkey.png", 2.0f));
+        string workingDirectory = Environment.CurrentDirectory;
+        // go up 3 dirs
+        workingDirectory += "\\..\\..\\..\\";
+        
+        Add(new Image(new Vector2(50, 50), workingDirectory + "Assets\\monkey.png", 2.0f));
         
         Add(new Toggle(new Vector2(5, 15), new Vector2(50, 20), new Color(0, 0, 255, 255), new Color(0, 0, 200, 255), Color.WHITE, "Toggle"));
     }

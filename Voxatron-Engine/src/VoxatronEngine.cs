@@ -14,7 +14,7 @@ public class VoxatronEngine
 
     public VoxatronEngine(string windowTitle)
     {
-        SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT);
+        //SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT);
         SetConfigFlags(ConfigFlags.FLAG_VSYNC_HINT);
         
         InitWindow(GetScreenWidth(), GetScreenHeight(), windowTitle);
@@ -52,6 +52,7 @@ public class VoxatronEngine
     
     public void AttachScene(Scene.Scene scene)
     {
+        _renderer.Clear();
         _scene = scene;
         _scene.SetEngine(this);
         _scene.SetRenderer(_renderer);

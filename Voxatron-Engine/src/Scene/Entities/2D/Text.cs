@@ -10,9 +10,9 @@ public class Text : Entity
 {
     private readonly TextElement _element;
     
-    public Text(string content, Vector2 position, Color color)
+    public Text(string content, Vector2 position, Color color, int fontSize = 20)
     {
-        _element = new(content, ScreenUtil.ScreenPercent(position), color, 20);
+        _element = new(content, ScreenUtil.ScreenPercent(position), color, fontSize);
     }
     
     public override bool Init(Renderer renderer)

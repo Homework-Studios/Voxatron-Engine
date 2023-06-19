@@ -15,13 +15,13 @@ public class Box : Entity
     
     private BoxElement _element;
     
-    public Box(Vector2 position, Vector2 size, Color color)
+    public Box(Vector2 position, Vector2 size, Color color, bool hardRounded = false)
     {
         Position = ScreenUtil.ScreenPercent(position) - size / 2;
         Size = size;
         Color = color;
         
-        _element = new BoxElement(Position, Size, Color, false);
+        _element = new BoxElement(Position, Size, Color, hardRounded);
     }
     
     public override bool Init(Renderer renderer)

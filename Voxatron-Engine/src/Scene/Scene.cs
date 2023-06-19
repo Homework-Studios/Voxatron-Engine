@@ -4,6 +4,7 @@ namespace Voxatron_Engine.Scene;
 
 public abstract class Scene
 {
+    protected VoxatronEngine Engine;
     protected Renderer Renderer;
     public List<Entity> Entities = new();
 
@@ -36,6 +37,11 @@ public abstract class Scene
     public void Clear()
     {
         Entities.Clear();
+    }
+    
+    public void SetEngine(VoxatronEngine engine)
+    {
+        Engine = engine;
     }
     
     public void SetRenderer(Renderer renderer)

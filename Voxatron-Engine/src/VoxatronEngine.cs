@@ -47,6 +47,7 @@ public class VoxatronEngine
     public void AttachScene(Scene.Scene scene)
     {
         _scene = scene;
+        _scene.SetEngine(this);
         _scene.SetRenderer(_renderer);
         _scene.Init();
     }

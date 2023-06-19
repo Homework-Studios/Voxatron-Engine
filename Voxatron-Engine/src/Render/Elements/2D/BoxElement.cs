@@ -3,13 +3,13 @@ using Raylib_cs;
 
 namespace Voxatron_Engine.Render.Elements._2D;
 
-public class BoxOutlineElement : Element
+public class BoxElement : Element
 {
     public Vector2 Position { get; set; }
     public Vector2 Size { get; set; }
     public Color Color { get; set; }
     
-    public BoxOutlineElement(Vector2 position, Vector2 size, Color color)
+    public BoxElement(Vector2 position, Vector2 size, Color color)
     {
         Position = position;
         Size = size;
@@ -24,7 +24,7 @@ public class BoxOutlineElement : Element
 
     public override bool Render()
     {
-        Raylib.DrawRectangleRoundedLines(new Rectangle(Position.X, Position.Y, Size.X, Size.Y), 1f, 15, 3, Color);
+        Raylib.DrawRectangleRounded(new Rectangle(Position.X, Position.Y, Size.X, Size.Y), 1f, 15, Color);
         return true;
     }
 }

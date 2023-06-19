@@ -12,12 +12,12 @@ public class VoxatronEngine
     
     public Random Random = new();
 
-    public VoxatronEngine()
+    public VoxatronEngine(string windowTitle)
     {
         SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT);
         SetConfigFlags(ConfigFlags.FLAG_VSYNC_HINT);
         
-        InitWindow(GetScreenWidth(), GetScreenHeight(), "Unknown Title");
+        InitWindow(GetScreenWidth(), GetScreenHeight(), windowTitle);
         ToggleFullscreen();
         SetTargetFPS(60);
 
@@ -29,6 +29,7 @@ public class VoxatronEngine
         while (!_shouldClose)
         {
             if(_scene == null) continue;
+            if(IsKeyPressed(KeyboardKey.KEY_RIGHT_SHIFT)) _shouldClose = true;
             
             _scene.Update();
             _renderer.Update();

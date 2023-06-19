@@ -32,3 +32,8 @@ _UpgradeReport_Files/
 Thumbs.db
 Desktop.ini
 .DS_Store
+/Voxatron/bin/
+/Voxatron/Scene/
+/Voxatron-Engine/bin/
+/Voxatron-Engine/obj/
+/.idea/

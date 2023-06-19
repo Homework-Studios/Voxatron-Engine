@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using Raylib_cs;
 using Voxatron_Engine.Scene.Entities._2D;
 

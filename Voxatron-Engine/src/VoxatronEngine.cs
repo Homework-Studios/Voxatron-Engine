@@ -9,6 +9,8 @@ public class VoxatronEngine
     private readonly Renderer _renderer;
     private Scene.Scene? _scene;
 
+    private bool _shouldClose = false;
+
     public VoxatronEngine()
     {
         InitWindow(GetScreenWidth(), GetScreenHeight(), "Unknown Title");
@@ -22,7 +24,7 @@ public class VoxatronEngine
     
     public void Run()
     {
-        while (!WindowShouldClose())
+        while (!_shouldClose)
         {
             if(_scene == null) continue;
             
@@ -40,6 +42,7 @@ public class VoxatronEngine
     
     public void Shutdown()
     {
+        _shouldClose = true;
         CloseWindow();
         Environment.Exit(0);
     }

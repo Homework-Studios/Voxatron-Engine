@@ -40,4 +40,8 @@
       <Compile Include="obj\Debug\net7.0\Voxatron.GlobalUsings.g.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Assets\" />
+    </ItemGroup>
+
 </Project>

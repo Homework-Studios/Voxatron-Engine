@@ -5,7 +5,7 @@ namespace Voxatron_Engine.Render.Elements._2D;
 
 public class TextElement : Element
 {
-    private readonly string _text;
+    private string _text;
     private readonly Vector2 _position;
     private readonly Color _color;
     private readonly int _fontSize;
@@ -29,5 +29,10 @@ public class TextElement : Element
         // move the text back by half the width and half of the font size up
         Raylib.DrawText(_text, (int)_position.X - Raylib.MeasureText(_text, _fontSize) / 2, (int)_position.Y - _fontSize / 2, _fontSize, _color);
         return true;
+    }
+    
+    public void SetText(string text)
+    {
+        _text = text;
     }
 }

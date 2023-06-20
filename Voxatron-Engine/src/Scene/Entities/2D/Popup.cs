@@ -18,11 +18,22 @@ public class Popup : Entity
     public Popup(string text)
     {
         Vector2 center = ScreenUtil.Center(new());
+        Vector2 textCenter = new Vector2(center.X, center.Y);
         
-        // Top and bottom FontSize + 20 and sides MeasureText + 20
-        Vector2 size = new Vector2(Raylib.MeasureText(text, FontSize) + 40, FontSize + 40);
+        int lineBreaks = 0;
+        foreach (char c in text)
+        {
+            if (c == '\n')
+            {
+                lineBreaks++;
+            }
+        }
         
-        // min size of 100x100
+        // TODO: Text Height is still a bit off
+        int textHeight = (FontSize + 5) * lineBreaks;
+        Vector2 size = new Vector2(Raylib.MeasureText(text, FontSize) + 40, textHeight + 40);
+
+        // min size of 200x100
         size.X = Math.Max(size.X, 200);
         size.Y = Math.Max(size.Y, 100);
 

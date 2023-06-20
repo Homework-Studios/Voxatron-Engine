@@ -1,6 +1,8 @@
 ﻿using System.Numerics;
 using Raylib_cs;
 using Voxatron_Engine.Scene.Entities._2D;
+using Voxatron_Engine.Scene.Entities._2D.Debug;
+using Image = Voxatron_Engine.Scene.Entities._2D.Image;
 
 namespace Voxatron.Scene;
 
@@ -8,26 +10,37 @@ public class TitleScene : Voxatron_Engine.Scene.Scene
 {
     public override void Init()
     {
-        Vector2 screenSize = new(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
-        screenSize -= new Vector2(50, 50);
+        var workingDirectory = Environment.CurrentDirectory;
+        workingDirectory += "\\..\\..\\..\\";
+
+        Add(new Image(new(50, 50), workingDirectory + "Assets/background.png", 1, true));
         
-        Add(new Box(new(50, 50), screenSize, new (20, 20, 20, 255)));
+        Add(new Box(new (50, 50), new (Raylib.GetScreenWidth() * 2, Raylib.GetScreenHeight() * 2), new (0,0,0,50)));
+
+        Add(new Box(new (50, 90), new(Raylib.GetScreenWidth() * 0.9f, 75), new (0,0,0, 50), true));
         
-        Add(new Text("Voxatron", new(50, 10), Color.WHITE, 75));
+        Button resume = new Button(new (15, 90), new (175, 25), Color.RED, Color.BLUE, Color.GOLD, "Resume");
+        Button newGame = new Button(new (35, 90), new (175, 25), Color.RED, Color.BLUE, Color.GOLD, "New Game");
+        Button settings = new Button(new (65, 90), new (175, 25), Color.RED, Color.BLUE, Color.GOLD, "Settings");
+        Button credits = new Button(new (85, 90), new (175, 25), Color.RED, Color.BLUE, Color.GOLD, "Credits");
+
+        credits.ButtonClicked += () => Add(new Popup("This game was made by Homework Studios, founded by Jonas Windmann and Timon Richter. \nHomework studios is a small indie game studio from Germany. We are currently working on our first game, which is this one. We hope you enjoy it!"));
+
+        Add(resume);
+        Add(newGame);
+        Add(settings);
+        Add(credits);
         
-        Add(new Box(new (50, 50), new (400, 75), new (50, 50, 50, 255), true));
-        Button play = new Button(new(46.8f, 50), new (125, 25), new (0, 200, 0, 255), new (0, 175, 0, 255), Color.WHITE,  "PLAY");
-        Button off = new Button(new(57, 50), new (50, 25), new (200, 0, 0, 255), new (175, 0, 0, 255), Color.WHITE,  "OFF");
-        
-        play.ButtonClicked += () => Engine.AttachScene(new TestScene());
-        off.ButtonClicked += () => Engine.Shutdown();
-        
-        Add(play);
-        Add(off);
+        //Add(new PercentageGrid());
     }
 
     public override void Update()
     {
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_P))
+        {
+            Add(new Popup(Raylib.GetClipboardText_()));
+        }
+        
         UpdateEntities();
     }
 }

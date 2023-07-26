@@ -44,4 +44,9 @@
       <Folder Include="Assets\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="ImGui.NET" Version="1.89.7.1" />
+      <PackageReference Include="Raylib-cs" Version="4.5.0.2" />
+    </ItemGroup>
+
 </Project>

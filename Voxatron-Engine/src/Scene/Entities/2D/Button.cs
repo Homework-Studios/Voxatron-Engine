@@ -17,7 +17,7 @@ public class Button : Entity
     private readonly BoxElement _outlineElement;
     private readonly TextElement _textElement;
 
-    public event Action? ButtonClicked;
+    public event Action? OnClick;
 
     public Button(Vector2 position, Vector2 size, Color color, Color hoverColor, Color textColor, string text)
     {
@@ -82,7 +82,7 @@ public class Button : Entity
         if (isReleased)
         {
             // Run the event when the mouse is released over the button
-            ButtonClicked?.Invoke();
+            OnClick?.Invoke();
         }
 
         return true;

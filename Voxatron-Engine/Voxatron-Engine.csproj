@@ -9,7 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="ImGui.NET" Version="1.89.7.1" />
       <PackageReference Include="Raylib-cs" Version="4.5.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="src\Render\Elements\3D\" />
     </ItemGroup>
 
 </Project>

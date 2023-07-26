@@ -10,6 +10,7 @@ public abstract class Scene
 
     public abstract void Init();
     public abstract void Update();
+    public abstract void Unload();
 
     protected void UpdateEntities()
     {
@@ -26,9 +27,10 @@ public abstract class Scene
         entity.Init(_renderer);
     }
     
-    public void Remove(Entity entity)
+    public void Remove(Entity entity, int layer = 0)
     {
         _entities.Remove(entity);
+        entity.SetScene(this);
         entity.Remove(_renderer);
     }
     

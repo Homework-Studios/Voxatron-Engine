@@ -2,6 +2,7 @@
 using Raylib_cs;
 using Voxatron_Engine.Render;
 using Voxatron_Engine.Render.Elements._2D;
+using Voxatron_Engine.Scene.Entities._2D.Debug;
 using Voxatron_Engine.Tool;
 
 namespace Voxatron_Engine.Scene.Entities._2D
@@ -12,7 +13,8 @@ namespace Voxatron_Engine.Scene.Entities._2D
         private readonly Vector2 _position;
         private readonly Vector2 _size;
         private const float PressedShrink = 0.95f;
-        private readonly Color _color;
+        private readonly Color _colorOff;
+        private readonly Color _colorOn;
         private readonly Color _hoverColor;
 
         private readonly BoxElement _outlineElement;
@@ -22,14 +24,15 @@ namespace Voxatron_Engine.Scene.Entities._2D
 
         public event Action<bool>? ToggleStateChanged;
 
-        public Toggle(Vector2 position, Vector2 size, Color color, Color hoverColor, Color textColor, string text)
+        public Toggle(Vector2 position, Vector2 size, Color colorOff, Color colorOn, Color hoverColor, Color textColor, string text)
         {
             _position = ScreenUtil.ScreenPercent(position);
             _size = size * 2;
-            _color = color;
+            _colorOff = colorOff;
+            _colorOn = colorOn;
             _hoverColor = hoverColor;
 
-            _outlineElement = new BoxElement(_position - _size / 2, _size, _color);
+            _outlineElement = new BoxElement(_position - _size / 2, _size, _colorOff);
             _textElement = new TextElement(text, _position, textColor, 27);
         }
 
@@ -57,7 +60,27 @@ namespace Voxatron_Engine.Scene.Entities._2D
             // var isClicked = isHovering && Raylib.IsMouseButtonDown(MouseButton.MOUSE_LEFT_BUTTON);
             var isReleased = isHovering && Raylib.IsMouseButtonReleased(MouseButton.MOUSE_LEFT_BUTTON);
 
-            _outlineElement.Color = isHovering ? _hoverColor : _color;
+            // TODO: Make it look better and more responsive
+            _outlineElement.Color = isHovering ? 
+                _isToggled ? 
+                    new Color(
+                        (byte)MathF.Max(_hoverColor.r - _colorOn.r, 0),
+                        (byte)MathF.Max(_hoverColor.g - _colorOn.g, 0),
+                        (byte)MathF.Max(_hoverColor.b - _colorOn.b, 0),
+                        (byte)MathF.Max(_hoverColor.a - _colorOn.a, 0)
+                    ) 
+                    : 
+                    new Color(
+                        (byte)MathF.Max(_hoverColor.r - _colorOff.r, 0),
+                        (byte)MathF.Max(_hoverColor.g - _colorOff.g, 0),
+                        (byte)MathF.Max(_hoverColor.b - _colorOff.b, 0),
+                        (byte)MathF.Max(_hoverColor.a - _colorOff.a, 0)
+                    ) 
+                : 
+                _isToggled ? 
+                    _colorOn
+                    : 
+                    _colorOff;
 
             if (!isReleased) return true;
             _isToggled = !_isToggled;
@@ -66,11 +89,13 @@ namespace Voxatron_Engine.Scene.Entities._2D
             {
                 _outlineElement.Position = _position - _size / 2 * PressedShrink;
                 _outlineElement.Size = _size * PressedShrink;
+                _outlineElement.Color = _colorOn;
             }
             else
             {
                 _outlineElement.Position = _position - _size / 2;
                 _outlineElement.Size = _size;
+                _outlineElement.Color = _colorOff;
             }
 
             ToggleStateChanged?.Invoke(_isToggled);

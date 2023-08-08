@@ -1,0 +1,26 @@
+{
+  "name": "voxascriptvsc",
+  "publisher": "HomeworkStudios",
+  "displayName": "VoxaScriptVSC",
+  "description": "Complete language support for the VoxaScript language",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.81.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "voxascript",
+      "aliases": ["VoxaScript", "voxascript"],
+      "extensions": ["vx"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "voxascript",
+      "scopeName": "source.voxascript",
+      "path": "./syntaxes/voxascript.tmLanguage.json"
+    }]
+  }
+}

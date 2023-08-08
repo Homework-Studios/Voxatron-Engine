@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxatron-Engine-v2", "Voxatron-Engine-v2\Voxatron-Engine-v2.csproj", "{7F65B7CD-CEC2-45AC-B1FA-EA5A45954167}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoxaScript", "VoxaScript\VoxaScript.csproj", "{981D9CE9-5753-436C-A32A-FEFE9547EDB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F65B7CD-CEC2-45AC-B1FA-EA5A45954167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F65B7CD-CEC2-45AC-B1FA-EA5A45954167}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F65B7CD-CEC2-45AC-B1FA-EA5A45954167}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F65B7CD-CEC2-45AC-B1FA-EA5A45954167}.Release|Any CPU.Build.0 = Release|Any CPU
+		{981D9CE9-5753-436C-A32A-FEFE9547EDB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{981D9CE9-5753-436C-A32A-FEFE9547EDB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{981D9CE9-5753-436C-A32A-FEFE9547EDB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{981D9CE9-5753-436C-A32A-FEFE9547EDB4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

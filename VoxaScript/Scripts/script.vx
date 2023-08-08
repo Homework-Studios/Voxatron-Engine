@@ -1,0 +1,45 @@
+﻿print("Script Tests running...");
+
+if 1 + 1 == 2 {
+    print("1 + 1 == 2");
+}
+
+switch 1 + 1 {
+    
+    case 2 {
+        print("1 + 1 == 2");
+    }
+    
+    default {
+        print("1 + 1 != 2");
+    }
+}
+
+var i = 0;
+
+while i < 10 {
+    print(i);
+    i = i + 1;
+}
+
+for i in 0 -> 10 {
+    print(i);
+}
+
+function test() {
+    print("test");
+}
+
+test();
+
+function testTwo(int a, int b) {
+    print(a + b);
+}
+
+test2(1, 2);
+
+function testThree(int a, int b) -> int {
+    return a + b;
+}
+
+print(test3(1, 2));

@@ -1,0 +1,9 @@
+﻿var eingabe = input("Passwort: ");
+var passwort = "1234";
+
+if eingabe == passwort {
+    print("Passwort korrekt");
+    return;
+}
+
+print("Passwort falsch");

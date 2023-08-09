@@ -14,7 +14,7 @@ public class Enviroment
 
     public Enviroment()
     {
-        LoadLanguageFunction("Print", Print);
+        LoadLanguageFunction("print", Print);
 
         LoadLanguageFunction("input", Input);
     }

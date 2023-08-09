@@ -298,11 +298,14 @@ public class Parser
     public IAst? Unary()
     {
         // UnaryOp: +1, -1
-        while (CurrentToken.Value == "+" || CurrentToken.Value == "-")
+        while (CurrentToken.Value == "+" || CurrentToken.Value == "-" || CurrentToken.Value == "<<" ||
+               CurrentToken.Value == ">>")
         {
             var token = CurrentToken;
 
-            if (token.Value == "+")
+            if (token.Value == "<<") Eat("<<");
+            else if (token.Value == ">>") Eat(">>");
+            else if (token.Value == "+")
                 Eat("+");
             else if (token.Value == "-") Eat("-");
 
@@ -321,13 +324,14 @@ public class Parser
     {
         var node = Unary();
 
-        while (CurrentToken.Value == "*" || CurrentToken.Value == "/")
+        while (CurrentToken.Value == "*" || CurrentToken.Value == "/" || CurrentToken.Value == "%")
         {
             var token = CurrentToken;
 
-            if (token.Value == "*")
-                Eat("*");
+            if (token.Value == "*") Eat("*");
             else if (token.Value == "/") Eat("/");
+
+            else if (token.Value == "%") Eat("%");
 
             node = new BinaryOp
             {

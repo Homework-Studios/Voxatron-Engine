@@ -118,7 +118,7 @@ public class Parser
             {
                 arguments.Add(Eat());
 
-                if (CurrentToken.Value != ")") Eat(",");
+                if (CurrentToken.Value == ",") Eat(",");
             }
 
             Eat(")");

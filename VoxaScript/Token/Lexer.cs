@@ -42,8 +42,9 @@ public class Lexer
         _source = script.ToCharArray();
 
         // filters out comments
+        _source = Regex.Replace(new string(_source), @"/\*.*\*/", "", RegexOptions.Singleline).ToCharArray();
         _source = Regex.Replace(new string(_source), @"\/\/.*", "").ToCharArray();
-        _source = Regex.Replace(new string(_source), @"\/\*.*\*\/", "").ToCharArray();
+        
 
         // init the token class
         Token.Init();

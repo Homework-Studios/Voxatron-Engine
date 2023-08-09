@@ -46,29 +46,11 @@ public class Lexer
 
         var processed = new List<Token>();
         var inQuotes = false;
-        var inComment = false;
-        var lastC = ' ';
-        //TODO: replace last with peek
+
         foreach (var c in _source)
         {
             if (!HasSource()) break;
 
-
-            if (c == '/' && lastC == '/' && !inQuotes)
-            {
-                inComment = true;
-                Consume();
-                continue;
-            }
-
-            lastC = c;
-
-            if (inComment)
-            {
-                Console.Write(c);
-                Consume();
-                continue;
-            }
 
             if (c == '"') inQuotes = !inQuotes;
 

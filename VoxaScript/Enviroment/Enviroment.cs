@@ -1,139 +1,96 @@
 ﻿using VoxaScript.Enviroment.RuntimeValue;
 using VoxaScript.Token;
-using Void = VoxaScript.Enviroment.RuntimeValue.Void;
-using String = VoxaScript.Enviroment.RuntimeValue.String;
 using Boolean = VoxaScript.Enviroment.RuntimeValue.Boolean;
+using String = VoxaScript.Enviroment.RuntimeValue.String;
+using Void = VoxaScript.Enviroment.RuntimeValue.Void;
 
 namespace VoxaScript.Enviroment;
 
 public class Enviroment
 {
-    
     public Scope GlobalScope = Scope.CreateGlobalScope();
-    public Dictionary<string, object> LanguageVariables = new();
     public Dictionary<string, Func<IRuntimeValue[], IRuntimeValue>> LanguageFunctions = new();
-    
+    public Dictionary<string, object> LanguageVariables = new();
+
+    public Enviroment()
+    {
+        LoadLanguageFunction("Print", Print);
+
+        LoadLanguageFunction("input", Input);
+    }
+
+    private IRuntimeValue Print(IRuntimeValue[] values)
+    {
+        if (values.Length != 1) throw new Exception("Print() takes exactly 1 argument.");
+
+        Console.WriteLine(values[0].ToString());
+
+        return new Void();
+    }
+
+    private IRuntimeValue Input(IRuntimeValue[] values)
+    {
+        if (values.Length != 1) throw new Exception("input() takes exactly 1 argument.");
+
+        Console.Write(values[0].ToString());
+        var input = Console.ReadLine();
+
+        return new String { Value = input };
+    }
+
     public void LoadLanguageVariable(string name, object value)
     {
         LanguageVariables[name] = value;
     }
-    
+
     public void LoadLanguageFunction(string name, Func<IRuntimeValue[], IRuntimeValue> function)
     {
         LanguageFunctions[name] = function;
     }
 
-    public Enviroment()
-    {
-        LoadLanguageFunction("print", (value) =>
-        {
-            if(value.Length != 1)
-            {
-                throw new Exception("print() takes exactly 1 argument.");
-            }
-
-            Console.WriteLine(value[0].ToString());
-            
-            return new Void();
-        });
-        
-        LoadLanguageFunction("input", (value) =>
-        {
-            if(value.Length != 1)
-            {
-                throw new Exception("input() takes exactly 1 argument.");
-            }
-
-            Console.Write(value[0].ToString());
-            string input = Console.ReadLine();
-            
-            return new String { Value = input };
-        });
-    }
-
     public void Load(string source)
     {
-        Token.Token[] tokens = Lexer.Lex(source);
-        Parser.Parser parser = new Parser.Parser(tokens);
+        var tokens = Lexer.Lex(source);
+        var parser = new Parser.Parser(tokens);
         Parser.Parser.IAst? ast = parser.Parse();
-        
+
         if (ast != null)
-        {
             Evaluate(GlobalScope, ast);
-        }
         else
-        {
             throw new Exception("Failed to parse.");
-        }
     }
 
     public IRuntimeValue Evaluate(Scope scope, Parser.Parser.IAst ast)
     {
-        if (ast is Parser.Parser.Block)
-        {
-            return EvaluateBlock(scope, (Parser.Parser.Block) ast);
-        }
+        if (ast is Parser.Parser.Block) return EvaluateBlock(scope, (Parser.Parser.Block)ast);
 
-        if (ast is Parser.Parser.BinaryOp)
-        {
-            return EvaluateBinaryOp(scope, (Parser.Parser.BinaryOp) ast);
-        }
-        
+        if (ast is Parser.Parser.BinaryOp) return EvaluateBinaryOp(scope, (Parser.Parser.BinaryOp)ast);
+
         if (ast is Parser.Parser.VariableDeclaration)
-        {
-            return EvaluateVariableDeclaration(scope, (Parser.Parser.VariableDeclaration) ast);
-        }
-        
-        if (ast is Parser.Parser.Variable)
-        {
-            return EvaluateVariable(scope, (Parser.Parser.Variable) ast);
-        }
+            return EvaluateVariableDeclaration(scope, (Parser.Parser.VariableDeclaration)ast);
+
+        if (ast is Parser.Parser.Variable) return EvaluateVariable(scope, (Parser.Parser.Variable)ast);
 
         if (ast is Parser.Parser.VariableAssignment)
-        {
-            return EvaluateVariableAssignment(scope, (Parser.Parser.VariableAssignment) ast);
-        }
-        
-        if (ast is Parser.Parser.If) 
-        {
-            return EvaluateIf(scope, (Parser.Parser.If) ast);
-        }
+            return EvaluateVariableAssignment(scope, (Parser.Parser.VariableAssignment)ast);
+
+        if (ast is Parser.Parser.If) return EvaluateIf(scope, (Parser.Parser.If)ast);
 
         if (ast is Parser.Parser.FunctionDeclaration)
-        {
-            return EvaluateFunctionDeclaration(scope, (Parser.Parser.FunctionDeclaration) ast);
-        }
+            return EvaluateFunctionDeclaration(scope, (Parser.Parser.FunctionDeclaration)ast);
 
-        if (ast is Parser.Parser.FunctionCall)
-        {
-            return EvaluateFunctionCall(scope, (Parser.Parser.FunctionCall) ast);
-        }
-        
-        if (ast is Parser.Parser.Return) 
-        {
-            return EvaluateReturn(scope, (Parser.Parser.Return) ast);
-        }
+        if (ast is Parser.Parser.FunctionCall) return EvaluateFunctionCall(scope, (Parser.Parser.FunctionCall)ast);
 
-        if (ast is Parser.Parser.String)
-        {
-            return new String { Value = ((Parser.Parser.String) ast).Token.Value };
-        }
-        
-        if (ast is Parser.Parser.Int) 
-        {
-            return new Int { Value = ((Parser.Parser.Int) ast).Token.AsInt() };
-        }
+        if (ast is Parser.Parser.Return) return EvaluateReturn(scope, (Parser.Parser.Return)ast);
 
-        if(ast is Parser.Parser.Float) 
-        {
-            return new Float { Value = ((Parser.Parser.Float) ast).Token.AsFloat() };
-        }
-        
-        if (ast is Parser.Parser.Boolean)
-        {
-            return new Boolean { Value = ((Parser.Parser.Boolean) ast).Token.AsBoolean() };
-        }
-        
+        if (ast is Parser.Parser.String) return new String { Value = ((Parser.Parser.String)ast).Token.Value };
+
+        if (ast is Parser.Parser.Int) return new Int { Value = ((Parser.Parser.Int)ast).Token.AsInt() };
+
+        if (ast is Parser.Parser.Float) return new Float { Value = ((Parser.Parser.Float)ast).Token.AsFloat() };
+
+        if (ast is Parser.Parser.Boolean) return new Boolean { Value = ((Parser.Parser.Boolean)ast).Token.AsBoolean() };
+
         return new Void();
     }
 
@@ -153,12 +110,9 @@ public class Enviroment
     private IRuntimeValue EvaluateVariable(Scope scope, Parser.Parser.Variable ast)
     {
         var variable = scope.GetVariable(ast.Token.Value);
-        
-        if (variable != null)
-        {
-            return variable;
-        }
-        
+
+        if (variable != null) return variable;
+
         throw new Exception("Variable " + ast.Token.Value + " not found");
     }
 
@@ -170,7 +124,7 @@ public class Enviroment
             scope.DefineVariable(ast.VariableName.Value, variableEvaluation);
             return variableEvaluation;
         }
-        
+
         scope.DefineVariable(ast.VariableName.Value, new Void());
         return new Void();
     }
@@ -182,30 +136,27 @@ public class Enviroment
             var returnValue = Evaluate(scope, ast.Expr);
             return new Return { ReturnValue = returnValue };
         }
-        
+
         return new Return { ReturnValue = new Void() };
     }
 
     private IRuntimeValue EvaluateIf(Scope scope, Parser.Parser.If ast)
     {
-        if (ast.Condition != null)
+        if (ast.Condition == null) return new Void();
+        var condition = Evaluate(scope, ast.Condition);
+
+        if (condition is Return returnValue && returnValue.ReturnValue is Boolean)
+            condition = returnValue.ReturnValue;
+
+        if (condition is Boolean boolean)
         {
-            var condition = Evaluate(scope, ast.Condition);
-            if (condition is Boolean boolean)
-            {
-                if (boolean.Value)
-                {
-                    if (ast.Body != null)
-                    {
-                        return Evaluate(scope, ast.Body);
-                    }
-                }
-            } else
-            {
-                throw new Exception("Condition must be a boolean");
-            }
+            if (boolean.Value && ast.Body != null) return Evaluate(scope, ast.Body);
         }
-        
+        else
+        {
+            throw new Exception("Condition must be a boolean");
+        }
+
         return new Void();
     }
 
@@ -243,8 +194,23 @@ public class Enviroment
                     if (ast.Right != null)
                         return Evaluate(scope, ast.Left).Neq(Evaluate(scope, ast.Right));
                 break;
+            case "%":
+                if (ast.Left != null)
+                    if (ast.Right != null)
+                        return Evaluate(scope, ast.Left).Mod(Evaluate(scope, ast.Right));
+                break;
+            case ">>":
+                if (ast.Left != null)
+                    if (ast.Right != null)
+                        return Evaluate(scope, ast.Left).Shr(Evaluate(scope, ast.Right));
+                break;
+            case "<<":
+                if (ast.Left != null)
+                    if (ast.Right != null)
+                        return Evaluate(scope, ast.Left).Shl(Evaluate(scope, ast.Right));
+                break;
         }
-        
+
         throw new Exception("Unknown binary operator " + ast.Op.Value);
     }
 
@@ -257,7 +223,6 @@ public class Enviroment
             var arguments = ast.Arguments;
             var functionArguments = function.Value.args;
             if (arguments.Length == functionArguments.Length)
-            {
                 for (var i = 0; i < arguments.Length; i++)
                 {
                     var argument = arguments[i];
@@ -272,25 +237,22 @@ public class Enviroment
                         throw new Exception("Argument " + functionArgument.Value + " is not optional");
                     }
                 }
-            }
             else
-            {
-                throw new Exception("Function " + ast.FunctionName.Value + " takes " + functionArguments.Length + " arguments, but " + arguments.Length + " were given");
-            }
+                throw new Exception("Function " + ast.FunctionName.Value + " takes " + functionArguments.Length +
+                                    " arguments, but " + arguments.Length + " were given");
 
             if (function.Value.body != null) return Evaluate(functionScope, function.Value.body);
         }
         else if (LanguageFunctions.TryGetValue(ast.FunctionName.Value, out var languageFunction))
-        { 
+        {
             return languageFunction(ast.Arguments.Select(arg =>
             {
                 if (arg != null) return Evaluate(scope, arg);
                 return new Void();
-                
             }).ToArray());
         }
-        else 
-        { 
+        else
+        {
             throw new Exception($"Undefined function '{ast.FunctionName.Value}'.");
         }
 
@@ -300,18 +262,13 @@ public class Enviroment
     public IRuntimeValue EvaluateBlock(Scope scope, Parser.Parser.Block ast)
     {
         foreach (var statement in ast.Statements)
-        {
             if (statement != null)
             {
                 var returned = Evaluate(scope, statement);
-            
-                if(returned is Return returnValue)
-                {
-                    return returnValue;
-                }
+
+                if (returned is Return returnValue) return returnValue;
             }
-        }
-        
+
         return new Void();
     }
 }

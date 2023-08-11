@@ -1,0 +1,23 @@
+{
+  parserClass="homeworkstudios.language.parser.VoxaScriptParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="VoxaScript"
+  psiImplClassSuffix="Impl"
+  psiPackage="homeworkstudios.language.psi"
+  psiImplPackage="homeworkstudios.language.psi.impl"
+
+  elementTypeHolderClass="homeworkstudios.language.psi.VoxaScriptTypes"
+  elementTypeClass="homeworkstudios.grammar.VoxaScriptElementType"
+  tokenTypeClass="homeworkstudios.grammar.VoxaScriptTokenType"
+
+}
+
+simpleFile ::= item_*
+
+// print(10 % 2);
+
+private item_ ::= (var|COMMENT|CRLF|FUNCTION)
+
+var ::= (VAR KEY? SEPARATOR VALUE?) | KEY

@@ -12,7 +12,13 @@
     <ItemGroup>
       <PackageReference Include="ImGui.NET" Version="1.89.7.1" />
       <PackageReference Include="ImGui.NET.Docking" Version="1.75.0" />
+      <PackageReference Include="NativeFileDialogSharp" Version="0.6.0-alpha" />
       <PackageReference Include="Raylib-cs" Version="4.5.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Editor\" />
+      <Folder Include="Runtime\" />
     </ItemGroup>
 
 </Project>

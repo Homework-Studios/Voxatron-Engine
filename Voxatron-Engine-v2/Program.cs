@@ -24,15 +24,18 @@ var dockspaceFlags = ImGuiDockNodeFlags.PassthruCentralNode;
 
 RenderTexture2D viewport = LoadRenderTexture(1080, 720);
 
+Scene.Scene scene = Scene.Scene.Create();
+
 while (!WindowShouldClose())
 {
-    Vector2 screen = new(GetScreenWidth(), GetScreenHeight());
+    scene.Update();
     
+    Vector2 screen = new(GetScreenWidth(), GetScreenHeight());
     // Drawing to render texture
     BeginTextureMode(viewport);
     ClearBackground(Color.DARKGRAY);
     
-    DrawFPS(10, 10);
+    scene.Draw();
     
     EndTextureMode();
     
@@ -57,21 +60,35 @@ while (!WindowShouldClose())
     
     ImGui.Begin("Viewport");
     ImGui.PopStyleVar(4);
-
     rlImGui.ImageRect(viewport.texture, ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().Y, new Rectangle(0, 0, viewport.texture.width, -viewport.texture.height));
     
+    // if the viewport dimensions change, we need to update the render texture
+    if (viewport.texture.width != GetScreenWidth() || viewport.texture.height != GetScreenHeight())
+    {
+        UnloadRenderTexture(viewport);
+        viewport = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+    }
     ImGui.End();
     
+    // Min Size for windows
+    ImGui.SetNextWindowSize(new Vector2(200, 200), ImGuiCond.FirstUseEver);
     ImGui.Begin("Workspace");
-    
+        if(ImGui.TreeNode("Scene"))
+        {
+            ImGui.TreeNode("Player");
+            ImGui.TreeNode("Camera");
+            ImGui.TreeNode("Light");
+            ImGui.TreeNode("Terrain");
+            ImGui.TreeNode("Cube");
+        }
     ImGui.End();
     
+    ImGui.SetNextWindowSize(new Vector2(200, 200), ImGuiCond.FirstUseEver);
     ImGui.Begin("Console");
-    
     ImGui.End();
     
+    ImGui.SetNextWindowSize(new Vector2(200, 200), ImGuiCond.FirstUseEver);
     ImGui.Begin("Properties");
-    
     ImGui.End();
 
     rlImGui.End();

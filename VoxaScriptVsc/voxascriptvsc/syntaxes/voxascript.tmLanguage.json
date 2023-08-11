@@ -65,7 +65,7 @@
 		},
 		"operators": {
 			"name": "keyword.operator.voxascript",
-			"match": "\\b(\\+|-|\\*|/|\\^|>|<|>=|<=|==|!=|&&|\\|\\||!|\\?|:|=)\\b"
+			"match": "\\b(\\+|-|\\*|%|<<|>>|/|\\^|>|<|>=|<=|==|!=|&&|\\|\\||!|\\?|:|=)\\b"
 		},
 		"punctuation": {
 			"name": "punctuation.definition.voxascript",

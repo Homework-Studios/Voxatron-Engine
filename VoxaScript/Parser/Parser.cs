@@ -118,7 +118,7 @@ public class Parser
             {
                 arguments.Add(Eat());
 
-                if (CurrentToken.Value != ")") Eat(",");
+                if (CurrentToken.Value == ",") Eat(",");
             }
 
             Eat(")");
@@ -212,7 +212,7 @@ public class Parser
                 {
                     arguments.Add(BooleanExpression());
 
-                    if (CurrentToken.Value != ")") Eat(",");
+                    if (CurrentToken.Value == ",") Eat(",");
                 }
 
                 Eat(")");
@@ -302,6 +302,7 @@ public class Parser
         {
             var token = CurrentToken;
 
+
             if (token.Value == "+")
                 Eat("+");
             else if (token.Value == "-") Eat("-");
@@ -321,13 +322,18 @@ public class Parser
     {
         var node = Unary();
 
-        while (CurrentToken.Value == "*" || CurrentToken.Value == "/")
+        while (CurrentToken.Value == "*" || CurrentToken.Value == "/" || CurrentToken.Value == "%" ||
+               CurrentToken.Value == "<<" ||
+               CurrentToken.Value == ">>")
         {
             var token = CurrentToken;
 
-            if (token.Value == "*")
-                Eat("*");
+            if (token.Value == "<<") Eat("<<");
+            else if (token.Value == ">>") Eat(">>");
+            else if (token.Value == "*") Eat("*");
             else if (token.Value == "/") Eat("/");
+
+            else if (token.Value == "%") Eat("%");
 
             node = new BinaryOp
             {

@@ -4,6 +4,7 @@ if 1 + 1 == 2 {
     print("1 + 1 == 2");
 }
 
+/*
 switch 1 + 1 {
     
     case 2 {
@@ -15,6 +16,7 @@ switch 1 + 1 {
     }
 }
 
+
 var i = 0;
 
 while i < 10 {
@@ -25,6 +27,7 @@ while i < 10 {
 for i in 0 -> 10 {
     print(i);
 }
+*/
 
 function test() {
     print("test");
@@ -32,14 +35,16 @@ function test() {
 
 test();
 
-function testTwo(int a, int b) {
+function testTwo(a, b) {
     print(a + b);
 }
 
-test2(1, 2);
+testTwo(1, 2);
 
-function testThree(int a, int b) -> int {
+
+function testThree(a, b) {
     return a + b;
 }
 
-print(test3(1, 2));
+print(testThree(1,2));
+

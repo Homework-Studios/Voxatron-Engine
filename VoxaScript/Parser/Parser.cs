@@ -106,9 +106,12 @@ public class Parser
             };
         }
 
-        if (CurrentToken.Value == "function")
+        if (CurrentToken.Value == "function" || CurrentToken.Value == "fun")
         {
-            Eat("function");
+            if(CurrentToken.Value == "fun")
+                Eat("fun");
+            else
+                Eat("function");
             var name = Eat();
             Eat("(");
 

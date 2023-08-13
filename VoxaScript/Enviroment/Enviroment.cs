@@ -194,6 +194,16 @@ public class Enviroment
                     if (ast.Right != null)
                         return Evaluate(scope, ast.Left).Neq(Evaluate(scope, ast.Right));
                 break;
+                case ">":
+                if (ast.Left != null)
+                    if (ast.Right != null)
+                        return Evaluate(scope, ast.Left).Gt(Evaluate(scope, ast.Right));
+                break;
+            case "<":
+                if (ast.Left != null)
+                    if (ast.Right != null)
+                        return Evaluate(scope, ast.Left).Lt(Evaluate(scope, ast.Right));
+                break;
             case "%":
                 if (ast.Left != null)
                     if (ast.Right != null)

@@ -87,4 +87,22 @@ public struct Int : IRuntimeValue
 
         return new Boolean { Value = true };
     }
+    
+    public Boolean Gt(IRuntimeValue value)
+    {
+        if (value is Int i) return new Boolean { Value = Value > i.Value };
+
+        if (value is Float f) return new Boolean { Value = Value > f.Value };
+
+        throw new Exception("Cannot gt int to " + value.GetType());
+    }
+    
+    public Boolean Lt(IRuntimeValue value)
+    {
+        if (value is Int i) return new Boolean { Value = Value < i.Value };
+
+        if (value is Float f) return new Boolean { Value = Value < f.Value };
+
+        throw new Exception("Cannot lt int to " + value.GetType());
+    }
 }

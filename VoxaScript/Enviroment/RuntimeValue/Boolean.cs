@@ -33,17 +33,27 @@ public struct Boolean : IRuntimeValue
 
     public IRuntimeValue Mod(IRuntimeValue value)
     {
-        throw new Exception("Cannot div boolean to " + value.GetType());
+        throw new Exception("Cannot mod boolean to " + value.GetType());
     }
 
     public IRuntimeValue Shr(IRuntimeValue value)
     {
-        throw new Exception("Cannot div boolean to " + value.GetType());
+        throw new Exception("Cannot shr boolean to " + value.GetType());
     }
 
     public IRuntimeValue Shl(IRuntimeValue value)
     {
-        throw new Exception("Cannot div boolean to " + value.GetType());
+        throw new Exception("Cannot shl boolean to " + value.GetType());
+    }
+    
+    public Boolean Gt(IRuntimeValue value)
+    {
+        throw new Exception("Cannot gt boolean to " + value.GetType());
+    }
+
+    public Boolean Lt(IRuntimeValue value)
+    {
+        throw new Exception("Cannot lt boolean to " + value.GetType());
     }
 
     public Boolean Eq(IRuntimeValue value)
@@ -52,6 +62,8 @@ public struct Boolean : IRuntimeValue
 
         return new Boolean { Value = false };
     }
+    
+   
 
     public Boolean Neq(IRuntimeValue value)
     {
@@ -59,4 +71,6 @@ public struct Boolean : IRuntimeValue
 
         return new Boolean { Value = true };
     }
+
+   
 }

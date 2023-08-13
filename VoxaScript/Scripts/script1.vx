@@ -1,7 +1,6 @@
 ﻿print(10 % 2);
 print(11 % 2);
 print(12 % 5);
-var a = b;
 // a
 print(1 << 2);
 print(2 << 3);
@@ -12,5 +11,4 @@ print(32 >> 3);
 print(64 >> 1);
 */
 
-awrw =   awr
-
+print(1 < 2);

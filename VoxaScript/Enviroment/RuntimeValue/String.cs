@@ -53,6 +53,16 @@ public struct String : IRuntimeValue
     {
         throw new Exception("Cannot shl string to " + value.GetType());
     }
+    
+    public Boolean Gt(IRuntimeValue value)
+    {
+        throw new Exception("Cannot gt string to " + value.GetType());
+    }
+
+    public Boolean Lt(IRuntimeValue value)
+    {
+        throw new Exception("Cannot lt string to " + value.GetType());
+    }
 
     public Boolean Eq(IRuntimeValue value)
     {

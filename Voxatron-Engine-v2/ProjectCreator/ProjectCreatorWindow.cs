@@ -1,9 +1,9 @@
-﻿using System.Numerics;
+﻿using System.IO.Pipes;
+using System.Numerics;
 using ImGuiNET;
 using Raylib_cs;
 using rlImGui_cs;
 using NativeFileDialogSharp;
-
 using static Raylib_cs.Raylib;
 
 namespace Voxatron_Engine_v2.ProjectCreator;
@@ -18,22 +18,12 @@ public class ProjectCreatorWindow : IWindow
     public enum UiView { Main, NewProject, LoadProject }
     public UiView CurrentUiView = UiView.Main;
     
-    public string[] recentProjects =
-    {
-        "Space Shooter",
-        "Voxatron TD",
-        "GTA 7",
-        "Destiny -1",
-        "World of Warcraft: Reallife",
-        "Minecraft 2",
-        "Teardown: The Movie",
-        "Forza Horizon: Just Stop Already"
-    };
+    public string[] recentProjects = {};
     
     public void Open()
     {
         IsOpen = true;
-        
+
         SetConfigFlags(ConfigFlags.FLAG_VSYNC_HINT);
         SetConfigFlags(ConfigFlags.FLAG_WINDOW_UNDECORATED);
         SetConfigFlags(ConfigFlags.FLAG_WINDOW_TRANSPARENT);
@@ -71,7 +61,7 @@ public class ProjectCreatorWindow : IWindow
         {
             if (ImGui.Selectable(recentProject))
             {
-                    
+                Console.WriteLine("Selected " + recentProject);
             }
         }
         ImGui.EndChild();
@@ -85,52 +75,172 @@ public class ProjectCreatorWindow : IWindow
         }
     }
     
-    public string name = "";
-    public string author = "";
-    public string location = "";
+    public string projectName = "";
+    public string projectLocation = "";
+    public bool validPath = false;
     
     public void NewProjectUiView()
     {
         ReturnToMainButton();
 
         // Input name
-        // Input author
         // input location
         
-        ImGui.InputText("Name", ref name, 100);
-        ImGui.InputText("Author", ref author, 100);
-        ImGui.InputText("Location", ref location, 100);
+        ImGui.Spacing();
+        if (ImGui.InputText("Project Name", ref projectName, 100))
+        {
+            // change the folder location at C:\Users\{user}\Documents\Voxatron-Engine\Projects\{projectName}
+            projectLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Voxatron-Engine\\Projects\\" + projectName;
+            
+            if(projectName == "")
+                projectLocation = "";
+        }
+
+        ImGui.Spacing();
+        ImGui.InputText("Project Location", ref projectLocation, 100);
+        
         ImGui.SameLine();
         if (ImGui.Button("Choose"))
         {
             // Open file dialog
             var result = Dialog.FolderPicker();
+            
+            // Set location to result
+            projectLocation = result.Path;
+            // Set the Name to the last folder in the path
+            projectName = result.Path.Split('\\')[result.Path.Split('\\').Length - 1];
         }
         
-        // Create project button
-        if (ImGui.Button("Create project"))
+        ImGui.Spacing();
+        
+        // check if the path is valid if not add a error message
+        if (projectLocation == "")
         {
-            // Create project
-            // Open project
-            // Close window
-            
+            // red
+            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 0, 0, 1));
+            ImGui.Text("Please choose a location for your project");
+            validPath = false;
+        }
+        else if (Directory.Exists(projectLocation))
+        {
+            // check if the folder is empty
+            if (Directory.GetFiles(projectLocation).Length != 0)
+            {
+                // red
+                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 0, 0, 1));
+                ImGui.Text("The folder is not empty");
+                validPath = false;
+            }
+            else
+            {
+                // set the project name to the name of the last folder in the path
+                projectName = projectLocation.Split('\\')[projectLocation.Split('\\').Length - 1];
+                validPath = true;
+            }
+        }
+        else
+        {
+            validPath = true;
+        }
+        
+        ImGui.PopStyleColor();
+        
+        ImGui.Spacing();
+        
+        // Create project button
+        if (validPath)
+        {
+            if (ImGui.Button("Create project"))
+            {
+                FileGenerator.FileGenerator.GenerateProjectDefault(new Project { ProjectName = projectName, ProjectPath = projectLocation });
+            }
         }
     }
     
-    public string loadLocation = "";
+    public string LoadLocation = "";
+    public bool ValidLoadPath = false;
+
+    public bool TestValidLoadPath()
+    {
+        if (Directory.Exists(LoadLocation) && Directory.GetFiles(LoadLocation, "*.voxatron.yml").Length != 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     
     public void LoadProjectUiView()
     {
         ReturnToMainButton();
         
         // Input location
-        ImGui.InputText("Location", ref loadLocation, 100);
-        
-        // Load project button
-        if (ImGui.Button("Load project"))
+        if (ImGui.InputText("Location", ref LoadLocation, 100))
         {
-            // Open project
-            // Close window
+            // check if the path contains a *.voxatron.yml file
+            // star means it can be anything
+            ValidLoadPath = TestValidLoadPath();
+        }
+        
+        // Choose button
+        ImGui.SameLine();
+        if (ImGui.Button("Choose"))
+        {
+            // Open file dialog
+            var result = Dialog.FolderPicker();
+            
+            // Set location to result
+            LoadLocation = result.Path;
+            
+            // check if the path contains a *.voxatron.yml file
+            // star means it can be anything
+            ValidLoadPath = TestValidLoadPath();
+        }
+        
+        ImGui.Spacing();
+        // check if the path is valid if not add a error message
+        if (LoadLocation == "")
+        {
+            // red
+            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 0, 0, 1));
+            ImGui.Text("Please choose a location for your project");
+            ImGui.PopStyleColor();
+            ValidLoadPath = false;
+        }
+        else if (Directory.Exists(LoadLocation))
+        {
+            // check if the folder is empty
+            if (Directory.GetFiles(LoadLocation).Length == 0)
+            {
+                // red
+                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 0, 0, 1));
+                ImGui.Text("The folder is empty");
+                ImGui.PopStyleColor();
+                ValidLoadPath = false;
+            }
+            else
+            {
+                // check if the path contains a *.voxatron.yml file
+                // star means it can be anything
+                ValidLoadPath = TestValidLoadPath();
+            }
+        }
+        else
+        {
+            ValidLoadPath = false;
+        }
+
+        // Load project button
+        if (ValidLoadPath)
+        {
+            if (ImGui.Button("Load project"))
+            {
+                // Open project
+                // Close window
+                // Open editor
+            }
         }
     }
 

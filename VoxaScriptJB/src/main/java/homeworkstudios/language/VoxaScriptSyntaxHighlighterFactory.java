@@ -1,4 +1,4 @@
-package homeworkstudios.highlighting;
+package homeworkstudios.language;
 
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;

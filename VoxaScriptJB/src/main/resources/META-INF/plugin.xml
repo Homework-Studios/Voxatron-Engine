@@ -11,7 +11,7 @@
     <vendor email="" url="https://github.com/Homework-Studios">Homework Studios</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
-         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         VoxaScript HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description>
         <![CDATA[
@@ -24,23 +24,53 @@
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="VoxaScript File"
-                  implementationClass="homeworkstudios.files.VoxaScriptFileType"
+                  implementationClass="homeworkstudios.language.VoxaScriptFileType"
                   language="VoxaScript"
                   extensions="vx"/>
         <lang.parserDefinition
                 language="VoxaScript"
-                implementationClass="homeworkstudios.lang.VoxaScriptParserDefinition"/>
+                implementationClass="homeworkstudios.language.VoxaScriptParserDefinition"/>
         <lang.syntaxHighlighterFactory
                 language="VoxaScript"
-                implementationClass="homeworkstudios.highlighting.VoxaScriptSyntaxHighlighterFactory"/>
-        +
+                implementationClass="homeworkstudios.language.VoxaScriptSyntaxHighlighterFactory"/>
         <colorSettingsPage
-                implementation="homeworkstudios.highlighting.VoxaScriptColorSettingsPage"/>
+                implementation="homeworkstudios.language.VoxaScriptColorSettingsPage"/>
+        <annotator
+                language="JAVA"
+                implementationClass="homeworkstudios.language.VoxaScriptAnnotator"/>
+        <codeInsight.lineMarkerProvider
+                language="JAVA"
+                implementationClass="homeworkstudios.language.VoxaScriptLineMarkerProvider"/>
+        <completion.contributor
+                language="VoxaScript"
+                implementationClass="homeworkstudios.language.VoxaScriptCompletionContributor"/>
+        <psi.referenceContributor language="JAVA"
+                                  implementation="homeworkstudios.language.VoxaScriptReferenceContributor"/>
+        <lang.refactoringSupport
+                language="VoxaScript"
+                implementationClass="homeworkstudios.language.VoxaScriptRefactoringSupportProvider"/>
+        <lang.findUsagesProvider
+                language="VoxaScript"
+                implementationClass="homeworkstudios.language.VoxaScriptFindUsagesProvider"/>
+
+
+        <gotoSymbolContributor implementation="homeworkstudios.language.VoxaScriptChooseByNameContributor"/>
+        <lang.formatter language="VoxaScript"
+                        implementationClass="homeworkstudios.language.VoxaScriptFormattingModelBuilder"/>
+        <codeStyleSettingsProvider implementation="homeworkstudios.language.VoxaScriptCodeStyleSettingsProvider"/>
+        <langCodeStyleSettingsProvider
+                implementation="homeworkstudios.language.VoxaScriptLanguageCodeStyleSettingsProvider"/>
+        <lang.commenter language="VoxaScript" implementationClass="homeworkstudios.language.VoxaScriptCommenter"/>
+        <lang.documentationProvider language="VoxaScript"
+                                    implementationClass="homeworkstudios.language.VoxaScriptDocumentationProvider"/>
+        <spellchecker.support language="VoxaScript"
+                              implementationClass="homeworkstudios.language.VoxaScriptSpellcheckingStrategy"/>
     </extensions>
 
 </idea-plugin>

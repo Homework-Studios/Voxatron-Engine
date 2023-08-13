@@ -1,4 +1,4 @@
-package homeworkstudios.files;
+package homeworkstudios.language;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +11,7 @@ public class VoxaScriptFileType extends LanguageFileType {
     public static final VoxaScriptFileType INSTANCE = new VoxaScriptFileType();
 
     private VoxaScriptFileType() {
-        super(VoxascriptLanguage.INSTANCE);
+        super(VoxaScriptLanguage.INSTANCE);
     }
 
     @NotNull

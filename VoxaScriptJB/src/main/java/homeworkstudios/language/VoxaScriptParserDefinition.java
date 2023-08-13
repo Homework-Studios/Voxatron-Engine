@@ -1,4 +1,4 @@
-package homeworkstudios.lang;
+package homeworkstudios.language;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.ParserDefinition;
@@ -10,14 +10,13 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
-import homeworkstudios.files.VoxascriptLanguage;
 import homeworkstudios.language.parser.VoxaScriptParser;
 import homeworkstudios.language.psi.VoxaScriptTypes;
 import org.jetbrains.annotations.NotNull;
 
 public class VoxaScriptParserDefinition implements ParserDefinition {
 
-    public static final IFileElementType FILE = new IFileElementType(VoxascriptLanguage.INSTANCE);
+    public static final IFileElementType FILE = new IFileElementType(VoxaScriptLanguage.INSTANCE);
 
     @NotNull
     @Override
@@ -28,7 +27,7 @@ public class VoxaScriptParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public TokenSet getCommentTokens() {
-        return VoxaScriptTokenSet.COMMENTS;
+        return VoxaScriptTokenSets.COMMENTS;
     }
 
     @NotNull

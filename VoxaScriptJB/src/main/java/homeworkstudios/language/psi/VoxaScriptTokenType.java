@@ -1,14 +1,14 @@
-package homeworkstudios.grammar;
-
+package homeworkstudios.language.psi;
 
 import com.intellij.psi.tree.IElementType;
-import homeworkstudios.files.VoxascriptLanguage;
+import homeworkstudios.language.VoxaScriptLanguage;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 public class VoxaScriptTokenType extends IElementType {
+
     public VoxaScriptTokenType(@NotNull @NonNls String debugName) {
-        super(debugName, VoxascriptLanguage.INSTANCE);
+        super(debugName, VoxaScriptLanguage.INSTANCE);
     }
 
     @Override

@@ -1,13 +1,12 @@
-package homeworkstudios.lang;
+package homeworkstudios.language;
 
 import com.intellij.psi.tree.TokenSet;
 import homeworkstudios.language.psi.VoxaScriptTypes;
 
-
-public interface VoxaScriptTokenSet {
-    TokenSet VARIABLE = TokenSet.create(VoxaScriptTypes.VAR);
+public interface VoxaScriptTokenSets {
 
     TokenSet IDENTIFIERS = TokenSet.create(VoxaScriptTypes.KEY);
 
     TokenSet COMMENTS = TokenSet.create(VoxaScriptTypes.COMMENT);
+
 }

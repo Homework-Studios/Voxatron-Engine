@@ -7,7 +7,11 @@ import com.intellij.psi.PsiElement;
 
 public class VoxaScriptVisitor extends PsiElementVisitor {
 
-  public void visitVar(@NotNull VoxaScriptVar o) {
+  public void visitProperty(@NotNull VoxaScriptProperty o) {
+    visitNamedElement(o);
+  }
+
+  public void visitNamedElement(@NotNull VoxaScriptNamedElement o) {
     visitPsiElement(o);
   }
 

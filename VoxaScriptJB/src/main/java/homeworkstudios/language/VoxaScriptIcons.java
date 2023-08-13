@@ -1,4 +1,4 @@
-package homeworkstudios.files;
+package homeworkstudios.language;
 
 import com.intellij.openapi.util.IconLoader;
 

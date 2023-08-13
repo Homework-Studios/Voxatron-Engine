@@ -1,7 +1,6 @@
-package homeworkstudios.lang;
+package homeworkstudios.language;
 
 import com.intellij.lexer.FlexAdapter;
-import homeworkstudios.language.VoxaScriptLexer;
 
 public class VoxaScriptLexerAdapter extends FlexAdapter {
 

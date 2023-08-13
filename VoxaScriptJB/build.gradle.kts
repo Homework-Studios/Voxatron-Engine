@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "homeworkstudios.rebix"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -17,7 +17,7 @@ intellij {
     version.set("2022.2.5")
     type.set("IC") // Target IDE Platform
 
-    plugins.set(listOf(/* Plugin Dependencies */))
+    plugins.set(listOf("com.intellij.java"))
 }
 
 tasks {

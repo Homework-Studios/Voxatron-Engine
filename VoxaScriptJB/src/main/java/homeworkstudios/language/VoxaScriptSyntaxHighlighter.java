@@ -1,4 +1,4 @@
-package homeworkstudios.highlighting;
+package homeworkstudios.language;
 
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
@@ -7,7 +7,6 @@ import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
-import homeworkstudios.lang.VoxaScriptLexerAdapter;
 import homeworkstudios.language.psi.VoxaScriptTypes;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,9 +24,6 @@ public class VoxaScriptSyntaxHighlighter extends SyntaxHighlighterBase {
             createTextAttributesKey("VoxaScript_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey BAD_CHARACTER =
             createTextAttributesKey("VoxaScript_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
-    public static final TextAttributesKey PLUS = createTextAttributesKey("VoxaScript_PLUS", DefaultLanguageHighlighterColors.OPERATION_SIGN);
-    public static final TextAttributesKey MINUS = createTextAttributesKey("VoxaScript_MINUS", DefaultLanguageHighlighterColors.OPERATION_SIGN);
-    public static final TextAttributesKey OPERATOR = createTextAttributesKey("VoxaScript_OPERATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN);
 
 
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};

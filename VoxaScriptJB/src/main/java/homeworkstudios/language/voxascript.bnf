@@ -1,0 +1,26 @@
+{
+  parserClass="homeworkstudios.language.parser.VoxaScriptParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="VoxaScript"
+  psiImplClassSuffix="Impl"
+  psiPackage="homeworkstudios.language.psi"
+  psiImplPackage="homeworkstudios.language.psi.impl"
+
+  elementTypeHolderClass="homeworkstudios.language.psi.VoxaScriptTypes"
+  elementTypeClass="homeworkstudios.language.psi.VoxaScriptElementType"
+  tokenTypeClass="homeworkstudios.language.psi.VoxaScriptTokenType"
+
+  psiImplUtilClass="homeworkstudios.language.psi.impl.VoxaScriptPsiImplUtil"
+}
+
+VoxaScriptFile ::= item_*
+
+private item_ ::= (property|COMMENT|CRLF)
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY {
+  mixin="homeworkstudios.language.psi.impl.VoxaScriptNamedElementImpl"
+  implements="homeworkstudios.language.psi.VoxaScriptNamedElement"
+  methods=[getKey getValue getName setName getNameIdentifier getPresentation]
+}

@@ -1,0 +1,3 @@
+VoxaScript.exe
+run script.vx
+exit

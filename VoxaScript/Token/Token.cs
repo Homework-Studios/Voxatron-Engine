@@ -26,6 +26,7 @@ public class Token
         "default",
         "while",
         "for",
+        "fun",
         "function",
         "return",
         "scope"

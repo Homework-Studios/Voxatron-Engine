@@ -38,6 +38,20 @@ public struct Return : IRuntimeValue
     {
         return value;
     }
+    
+    public Boolean Gt(IRuntimeValue value)
+    {
+        if (value is Boolean b)
+            return b;
+        return new Boolean { Value = false };
+    }
+
+    public Boolean Lt(IRuntimeValue value)
+    {
+        if (value is Boolean b)
+            return b;
+        return new Boolean { Value = false };
+    }
 
     public Boolean Eq(IRuntimeValue value)
     {

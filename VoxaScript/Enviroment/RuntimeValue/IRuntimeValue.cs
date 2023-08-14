@@ -14,4 +14,6 @@ public interface IRuntimeValue
     // Boolean operations
     public Boolean Eq(IRuntimeValue value);
     public Boolean Neq(IRuntimeValue value);
+    public Boolean Gt(IRuntimeValue value);
+    public Boolean Lt(IRuntimeValue value);
 }

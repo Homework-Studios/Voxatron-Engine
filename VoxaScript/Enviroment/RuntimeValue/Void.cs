@@ -43,6 +43,16 @@ public struct Void : IRuntimeValue
     {
         throw new Exception("Cannot shl void to " + value.GetType());
     }
+    
+    public Boolean Gt(IRuntimeValue value)
+    {
+        throw new Exception("Cannot gt void to " + value.GetType());
+    }
+    
+    public Boolean Lt(IRuntimeValue value)
+    {
+        throw new Exception("Cannot lt void to " + value.GetType());
+    }
 
     public Boolean Eq(IRuntimeValue value)
     {

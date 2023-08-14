@@ -13,12 +13,12 @@
       <PackageReference Include="ImGui.NET" Version="1.89.7.1" />
       <PackageReference Include="ImGui.NET.Docking" Version="1.75.0" />
       <PackageReference Include="NativeFileDialogSharp" Version="0.6.0-alpha" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Raylib-cs" Version="4.5.0.2" />
       <PackageReference Include="YamlDotNet" Version="13.1.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Editor\" />
       <Folder Include="Runtime\" />
     </ItemGroup>
 

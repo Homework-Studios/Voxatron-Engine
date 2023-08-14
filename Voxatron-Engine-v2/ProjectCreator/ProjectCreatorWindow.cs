@@ -4,6 +4,7 @@ using ImGuiNET;
 using Raylib_cs;
 using rlImGui_cs;
 using NativeFileDialogSharp;
+using Voxatron_Engine_v2.Editor;
 using static Raylib_cs.Raylib;
 
 namespace Voxatron_Engine_v2.ProjectCreator;
@@ -18,7 +19,8 @@ public class ProjectCreatorWindow : IWindow
     public enum UiView { Main, NewProject, LoadProject }
     public UiView CurrentUiView = UiView.Main;
     
-    public string[] recentProjects = {};
+    public string?[] recentProjects = {};
+    public string recentProjectsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Voxatron-Engine\\Projects\\";
     
     public void Open()
     {
@@ -29,11 +31,31 @@ public class ProjectCreatorWindow : IWindow
         SetConfigFlags(ConfigFlags.FLAG_WINDOW_TRANSPARENT);
         InitWindow(720, 470, WindowTitle);
         
+        // load all the folder names in the recent projects folder but just the last folders name should be shown
+        recentProjects = Directory.GetDirectories(recentProjectsPath);
+        // loop over
+        for (int i = 0; i < recentProjects.Length; i++)
+        {
+            // get the last folder name
+            recentProjects[i] = recentProjects[i].Split('\\')[recentProjects[i].Split('\\').Length - 1];
+        }
+        
+        // loop over them and remove those who do not have a *.voxatron.yml 
+        // * could be anything, but it should be the project name
+        for (int i = 0; i < recentProjects.Length; i++)
+        {
+            if (!File.Exists(recentProjectsPath + recentProjects[i] + "\\" + recentProjects[i] + ".voxatron.yml"))
+            {
+                recentProjects[i] = null;
+            }
+        }
+        
         rlImGui.Setup();
         ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 5);
         ImGui.PushStyleVar(ImGuiStyleVar.FrameRounding, 5);
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(12, 12));
         Run();
+        
     }
 
     public void MainUiView()
@@ -57,11 +79,17 @@ public class ProjectCreatorWindow : IWindow
             
         // List of recent projects
         ImGui.BeginChild("Recent projects", new Vector2(0, 0), true);
-        foreach (string recentProject in recentProjects)
+        foreach (string? recentProject in recentProjects)
         {
+            if(recentProject == null) continue;
             if (ImGui.Selectable(recentProject))
             {
-                Console.WriteLine("Selected " + recentProject);
+                ImGui.EndChild();
+                Project project = Project.Load(recentProjectsPath + recentProject);
+                Close();
+                EditorWindow editorWindow = new EditorWindow(project);
+                editorWindow.Open();
+                return;
             }
         }
         ImGui.EndChild();
@@ -152,7 +180,11 @@ public class ProjectCreatorWindow : IWindow
         {
             if (ImGui.Button("Create project"))
             {
-                FileGenerator.FileGenerator.GenerateProjectDefault(new Project { ProjectName = projectName, ProjectPath = projectLocation });
+                Project project = new Project { ProjectName = projectName, ProjectPath = projectLocation };
+                FileGenerator.FileGenerator.GenerateProjectDefault(project);
+                Close();
+                EditorWindow editorWindow = new EditorWindow(project);
+                editorWindow.Open();
             }
         }
     }
@@ -240,6 +272,10 @@ public class ProjectCreatorWindow : IWindow
                 // Open project
                 // Close window
                 // Open editor
+                Project project = Project.Load(LoadLocation);
+                Close();
+                EditorWindow editorWindow = new EditorWindow(project);
+                editorWindow.Open();
             }
         }
     }
@@ -291,11 +327,12 @@ public class ProjectCreatorWindow : IWindow
             EndDrawing();
         }
         
-        CloseWindow();
+        rlImGui.End();
     }
 
     public void Close()
     {
         IsOpen = false;
+        CloseWindow();
     }
 }

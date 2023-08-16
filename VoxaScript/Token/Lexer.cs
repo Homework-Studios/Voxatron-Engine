@@ -4,6 +4,9 @@ namespace VoxaScript.Token;
 
 public class Lexer
 {
+    public static int currentLine = 0;
+    public static int currentCharInLine = 0;
+
     private static char[] _source = Array.Empty<char>();
 
     public static bool CanSkip()
@@ -55,7 +58,16 @@ public class Lexer
         foreach (var c in _source)
         {
             if (!HasSource()) break;
-
+            
+            if (c == '\n')
+            {
+                currentLine++;
+                currentCharInLine = 0;
+            }
+            else
+            {
+                currentCharInLine++;
+            }
 
             if (c == '"') inQuotes = !inQuotes;
 
@@ -69,6 +81,7 @@ public class Lexer
 
             if (found.TokenType != Token.Type.Unknown)
             {
+                found.AddLocationData(currentLine, currentCharInLine);
                 processed.Add(found);
 
                 Consume(found.Value.Length);
@@ -79,11 +92,17 @@ public class Lexer
             {
                 var value = "";
 
-                while (IsAlphaOrDot()) value += Consume();
+                while (HasSource() && IsAlphaOrDot())
+                {
+                    value += Consume();
+                }
+                
 
                 var isScopeIdentifier = value.Contains(".");
 
-                processed.Add(new Token(isScopeIdentifier ? Token.Type.ScopeIdentifier : Token.Type.Identifier, value));
+                var token = new Token(isScopeIdentifier ? Token.Type.ScopeIdentifier : Token.Type.Identifier, value);
+                token.AddLocationData(currentLine, currentCharInLine);
+                processed.Add(token);
                 continue;
             }
 
@@ -91,9 +110,14 @@ public class Lexer
             {
                 var value = "";
 
-                while (IsNumericOrDot()) value += Consume();
+                while (HasSource() && IsNumericOrDot())
+                {
+                    value += Consume();
+                }
 
-                processed.Add(new Token(Token.Type.Literal, value));
+                var token = new Token(Token.Type.Literal, value);
+                token.AddLocationData(currentLine, currentCharInLine);
+                processed.Add(token);
                 continue;
             }
 
@@ -102,19 +126,21 @@ public class Lexer
                 var value = "";
 
                 Consume();
-
+                
                 while (true)
                 {
                     if (!HasSource()) break;
 
                     var next = Consume();
-
+                    
                     if (next == '"') break;
-
+                    
                     value += next;
                 }
 
-                processed.Add(new Token(Token.Type.Literal, value));
+                var token = new Token(Token.Type.Literal, value);
+                token.AddLocationData(currentLine, currentCharInLine);
+                processed.Add(token);
                 continue;
             }
 
@@ -122,7 +148,9 @@ public class Lexer
             Consume();
         }
 
-        processed.Add(new Token(Token.Type.Eof, ""));
+        var eof = new Token(Token.Type.Eof, "");
+        eof.AddLocationData(currentLine, currentCharInLine);
+        processed.Add(eof);
 
         return processed.ToArray();
     }

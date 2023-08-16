@@ -1,4 +1,5 @@
 ﻿using VoxaScript.Enviroment.RuntimeValue;
+using VoxaScript.Error;
 using VoxaScript.Token;
 using Boolean = VoxaScript.Enviroment.RuntimeValue.Boolean;
 using String = VoxaScript.Enviroment.RuntimeValue.String;
@@ -50,14 +51,15 @@ public class Enviroment
 
     public void Load(string source)
     {
+        new ErrorMessages(source);
+        
         var tokens = Lexer.Lex(source);
         var parser = new Parser.Parser(tokens);
-        Parser.Parser.IAst? ast = parser.Parse();
+        Parser.Parser.Block? il = parser.Parse();
+        
+        if (il == null) return;
 
-        if (ast != null)
-            Evaluate(GlobalScope, ast);
-        else
-            throw new Exception("Failed to parse.");
+        Evaluate(GlobalScope, il);
     }
 
     public IRuntimeValue Evaluate(Scope scope, Parser.Parser.IAst ast)

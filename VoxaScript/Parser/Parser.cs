@@ -1,4 +1,7 @@
-﻿namespace VoxaScript.Parser;
+﻿using System.Data;
+using VoxaScript.Error;
+
+namespace VoxaScript.Parser;
 
 public class Parser
 {
@@ -21,11 +24,6 @@ public class Parser
         }
     }
 
-    public void Error(string message)
-    {
-        throw new Exception(message);
-    }
-
     public Token.Token Eat(string expected = "")
     {
         var token = CurrentToken;
@@ -39,7 +37,14 @@ public class Parser
         if (_tokens[0].Value == expected)
             _tokens = _tokens[1..];
         else
-            Error($"Expected {expected} but got {_tokens[0].Value}");
+        {
+            // remove the faulty token
+            _tokens = _tokens[1..];
+            var errorToken = new Token.Token(Token.Token.Type.Error, "Unexpected token", ErrorMessages.Error.UnexpectedToken);
+            errorToken.atChar = token.atChar;
+            errorToken.atLine = token.atLine;
+            return errorToken;
+        }
 
         return token;
     }
@@ -55,7 +60,7 @@ public class Parser
     {
         if (CurrentToken.Value == "var")
         {
-            Eat("var");
+            var varToken = Eat("var");
             var name = Eat();
 
             // If Empty Declaration
@@ -64,34 +69,53 @@ public class Parser
                 {
                     Name = "VariableDeclaration",
                     VariableName = name,
-                    Value = null
+                    Value = null,
+                    Line = varToken.atLine,
+                    Char = varToken.atChar
                 };
 
-            Eat("=");
+            var first = Eat("=");
+            if (first.IsError) return first.AsParserError;
+            
             var value = BooleanExpression();
             return new VariableDeclaration
             {
                 Name = "VariableDeclaration",
                 VariableName = name,
-                Value = value
+                Value = value,
+                Line = varToken.atLine,
+                Char = varToken.atChar,
+                CanRunInGlobalScope = true
             };
         }
 
         if (CurrentToken.Value == "if")
         {
-            Eat("if");
+            var ifToken = Eat("if");
             var condition = BooleanExpression();
-            Eat("{");
+            
+            var first = Eat("{");
+            if (first.IsError) return first.AsParserError;
 
             var body = new List<IAst?>();
 
             while (CurrentToken.Value != "}")
             {
                 body.Add(BooleanExpression());
-                Eat(";");
+
+                if (SkipSemicolon)
+                {
+                    SkipSemicolon = false;
+                    continue;
+                }
+                
+                var inner = Eat(";");
+                if (inner.IsError) return inner.AsParserError;
             }
 
-            Eat("}");
+            var second = Eat("}");
+            if (second.IsError) return second.AsParserError;
+            
             SkipSemicolon = true;
 
             return new If
@@ -102,18 +126,19 @@ public class Parser
                 {
                     Name = "Block",
                     Statements = body.ToArray()
-                }
+                },
+                Line = ifToken.atLine,
+                Char = ifToken.atChar,
+                CanRunInGlobalScope = true
             };
         }
 
         if (CurrentToken.Value == "function" || CurrentToken.Value == "fun")
         {
-            if(CurrentToken.Value == "fun")
-                Eat("fun");
-            else
-                Eat("function");
+            var funToken = Eat();
             var name = Eat();
-            Eat("(");
+            var first = Eat("(");
+            if (first.IsError) return first.AsParserError;
 
             var arguments = new List<Token.Token>();
 
@@ -124,9 +149,11 @@ public class Parser
                 if (CurrentToken.Value == ",") Eat(",");
             }
 
-            Eat(")");
+            var second = Eat(")");
+            if (second.IsError) return second.AsParserError;
 
-            Eat("{");
+            var third = Eat("{");
+            if (third.IsError) return third.AsParserError;
 
             var body = new List<IAst?>();
 
@@ -139,7 +166,8 @@ public class Parser
                     SkipSemicolon = false;
             }
 
-            Eat("}");
+            var fourth = Eat("}");
+            if (fourth.IsError) return fourth.AsParserError;
 
             SkipSemicolon = true;
 
@@ -152,52 +180,24 @@ public class Parser
                 {
                     Name = "Block",
                     Statements = body.ToArray()
-                }
+                },
+                Line = funToken.atLine,
+                Char = funToken.atChar,
+                CanRunInGlobalScope = true
             };
         }
 
         if (CurrentToken.Value == "return")
         {
-            Eat("return");
+            var returnToken = Eat("return");
             var expr = BooleanExpression();
             return new Return
             {
                 Name = "Return",
-                Expr = expr
-            };
-        }
-
-        if (CurrentToken.Value == "scope")
-        {
-            Eat("scope");
-            var name = Eat();
-
-            Eat("{");
-
-            var body = new List<IAst?>();
-
-            while (CurrentToken.Value != "}")
-            {
-                body.Add(BooleanExpression());
-                if (!SkipSemicolon)
-                    Eat(";");
-                else
-                    SkipSemicolon = false;
-            }
-
-            Eat("}");
-
-            SkipSemicolon = true;
-
-            return new Scope
-            {
-                Name = "Scope",
-                ScopeName = name,
-                Body = new Block
-                {
-                    Name = "Block",
-                    Statements = body.ToArray()
-                }
+                Expr = expr,
+                Line = returnToken.atLine,
+                Char = returnToken.atChar,
+                CanRunInGlobalScope = false
             };
         }
 
@@ -215,16 +215,27 @@ public class Parser
                 {
                     arguments.Add(BooleanExpression());
 
-                    if (CurrentToken.Value == ",") Eat(",");
+                    if (CurrentToken.Value == ",")
+                    {
+                        Eat(",");
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
 
-                Eat(")");
+                var eaten = Eat(")");
+                if (eaten.IsError) return eaten.AsParserError;
 
                 return new FunctionCall
                 {
                     Name = "FunctionCall",
                     FunctionName = name,
-                    Arguments = arguments.ToArray()
+                    Arguments = arguments.ToArray(),
+                    Line = name.atLine,
+                    Char = name.atChar,
+                    CanRunInGlobalScope = true
                 };
             }
 
@@ -232,7 +243,7 @@ public class Parser
             if (Peek().Value == "=")
             {
                 var name = Eat();
-                Eat("=");
+                var equal = Eat("=");
                 var value = BooleanExpression();
 
                 if (value != null)
@@ -240,58 +251,115 @@ public class Parser
                     {
                         Name = "VariableAssignment",
                         VariableName = name,
-                        Value = value
+                        Value = value,
+                        Line = name.atLine,
+                        Char = name.atChar,
+                        CanRunInGlobalScope = true
                     };
 
-                Error("Variable assignment value is cannot be null");
+                return new Error
+                    { Name = ErrorMessages.Error.NullVariableAssignment, Line = equal.atLine, Char = equal.atChar, CanRunInGlobalScope = true};
             }
 
             var variable = Eat();
             return new Variable
             {
                 Name = "Variable",
-                Token = variable
+                Token = variable,
+                Line = variable.atLine,
+                Char = variable.atChar,
+                CanRunInGlobalScope = false
             };
         }
+        
+        // Now we convert the lexer errors to parser errors for the environment to handle
+        // Only one type of errors makes it easier to handle
+        if(CurrentToken.IsError)
+            return new Error
+            {
+                Name = CurrentToken.Error,
+                Line = CurrentToken.atLine,
+                Char = CurrentToken.atChar,
+                CanRunInGlobalScope = true
+            };
 
+        
         return null;
     }
 
     public IAst? Factor()
     {
         if (CurrentToken.IsInt())
+        {
+            var token = Eat();
+            if(token.IsError) return token.AsParserError;
+            
             return new Int
             {
                 Name = "Int",
-                Token = Eat()
+                Token = token,
+                Line = token.atLine,
+                Char = token.atChar,
+                CanRunInGlobalScope = false
             };
+        }
 
         if (CurrentToken.IsFloat())
+        {
+            var token = Eat();
+            if(token.IsError) return token.AsParserError;
+            
             return new Float
             {
                 Name = "Float",
-                Token = Eat()
+                Token = token,
+                Line = token.atLine,
+                Char = token.atChar,
+                CanRunInGlobalScope = false
             };
+        }
 
         if (CurrentToken.IsBoolean())
+        {
+            var token = Eat();
+            if(token.IsError) return token.AsParserError;
+            
             return new Boolean
             {
                 Name = "Boolean",
-                Token = Eat()
+                Token = token,
+                Line = token.atLine,
+                Char = token.atChar,
+                CanRunInGlobalScope = false
             };
+        }
 
         if (CurrentToken.IsString())
+        {
+            var token = Eat();
+            if(token.IsError) return token.AsParserError;
+            
+            
             return new String
             {
                 Name = "String",
-                Token = Eat()
+                Token = token,
+                Line = token.atLine,
+                Char = token.atChar,
+                CanRunInGlobalScope = false
             };
+        }
 
         if (CurrentToken.Value == "(")
         {
+            // has to be valid
             Eat("(");
+
             var node = BooleanExpression();
-            Eat(")");
+            
+            var eaten = Eat(")");
+            if (eaten.IsError) return eaten.AsParserError;
+            
             return node;
         }
 
@@ -305,16 +373,17 @@ public class Parser
         {
             var token = CurrentToken;
 
-
-            if (token.Value == "+")
-                Eat("+");
-            else if (token.Value == "-") Eat("-");
+            var eaten = Eat(token.Value);
+            if (eaten.IsError) return eaten.AsParserError;
 
             return new UnaryOp
             {
                 Name = "UnaryOp",
                 Op = token,
-                Expr = Factor()
+                Expr = Factor(),
+                Line = token.atLine,
+                Char = token.atChar,
+                CanRunInGlobalScope = false
             };
         }
 
@@ -331,19 +400,18 @@ public class Parser
         {
             var token = CurrentToken;
 
-            if (token.Value == "<<") Eat("<<");
-            else if (token.Value == ">>") Eat(">>");
-            else if (token.Value == "*") Eat("*");
-            else if (token.Value == "/") Eat("/");
-
-            else if (token.Value == "%") Eat("%");
+            var eaten = Eat(token.Value);
+            if (eaten.IsError) return eaten.AsParserError;
 
             node = new BinaryOp
             {
                 Name = "BinaryOp",
                 Left = node,
                 Op = token,
-                Right = Unary()
+                Right = Unary(),
+                Line = token.atLine,
+                Char = token.atChar,
+                CanRunInGlobalScope = false
             };
         }
 
@@ -358,16 +426,18 @@ public class Parser
         {
             var token = CurrentToken;
 
-            if (token.Value == "+")
-                Eat("+");
-            else if (token.Value == "-") Eat("-");
+            var eaten = Eat(token.Value);
+            if (eaten.IsError) return eaten.AsParserError;
 
             node = new BinaryOp
             {
                 Name = "BinaryOp",
                 Left = node,
                 Op = token,
-                Right = Term()
+                Right = Term(),
+                Line = token.atLine,
+                Char = token.atChar,
+                CanRunInGlobalScope = false
             };
         }
 
@@ -384,14 +454,18 @@ public class Parser
         {
             var token = CurrentToken;
 
-            Eat(token.Value);
+            var eaten = Eat(token.Value);
+            if (eaten.IsError) return eaten.AsParserError;
 
             node = new BinaryOp
             {
                 Name = "BinaryOp",
                 Left = node,
                 Op = token,
-                Right = Expression()
+                Right = Expression(),
+                Line = token.atLine,
+                Char = token.atChar,
+                CanRunInGlobalScope = false
             };
         }
 
@@ -401,10 +475,16 @@ public class Parser
     public Block? Parse()
     {
         var statements = new List<IAst>();
+        var token = CurrentToken;
 
         while (CurrentToken.TokenType != Token.Token.Type.Eof)
         {
             var node = BooleanExpression();
+
+            //if (node is Error)
+            //{
+            //    // DO NOTHING
+            //}
 
             if (node != null) statements.Add(node);
 
@@ -414,28 +494,115 @@ public class Parser
                 continue;
             }
 
-            Eat(";");
+            if (CurrentToken.TokenType == Token.Token.Type.Eof)
+            {
+                statements.Add(new Error {Char = token.atChar, Line = token.atLine, Name = ErrorMessages.Error.UnexpectedEndOfFile, CanRunInGlobalScope = true});
+                break;
+            }
+            
+            var eaten = Eat(";");
+            if(eaten.IsError)
+                statements.Add(eaten.AsParserError);
         }
+        
+        // check if the block contains errors
+        bool containsErrors = false;
+        foreach (IAst statement in statements)
+        {
+            if (statement is Error error)
+            {
+                containsErrors = true;
+                ErrorMessages.Instance.PrintError(error);
+            }
+        }
+
+        if (containsErrors) return null;
 
         return new Block
         {
             Name = "Block",
-            Statements = statements.ToArray()
+            Statements = statements.ToArray(),
+            Line = token.atLine,
+            Char = token.atChar,
+            CanRunInGlobalScope = true
         };
     }
 
     public interface IAst
     {
+        public int Line { get; set; }
+        public int Char { get; set; }
+        
+        public bool CanRunInGlobalScope { get; set; }
+        
         public bool Valid()
         {
             return true;
         }
+    }
+    
+    public struct Error : IAst
+    {
+        // Error Name ID
+        public ErrorMessages.Error Name;
+        
+        // Location of the error
+        public int Line { get; set; }
+        public int Char { get; set; }
+        
+        public bool CanRunInGlobalScope { get; set; }
     }
 
     public struct Block : IAst
     {
         public string Name;
         public IAst?[] Statements;
+
+        public bool ContainsErrors()
+        {
+            foreach (var statement in Statements)
+            {
+                if (statement is Error)
+                    return true;
+                if (statement is Block)
+                    return ((Block) statement).ContainsErrors();
+                if (statement is If)
+                    return (bool)((If) statement).Body?.ContainsErrors();
+                if (statement is FunctionDeclaration)
+                    return (bool)((FunctionDeclaration) statement).Body?.ContainsErrors();
+                
+                // IMPORTANT: When using blocks inside of a statement, make sure to check if the block contains errors
+                // Needed for recursion checking
+            }
+
+            return false;
+        }
+        
+        public Error[] GetErrors()
+        {
+            var errors = new List<Error>();
+            
+            foreach (var statement in Statements)
+            {
+                if (statement is Error)
+                    errors.Add((Error) statement);
+                if (statement is Block)
+                    errors.AddRange(((Block) statement).GetErrors());
+                if (statement is If)
+                    errors.AddRange(((If) statement).Body?.GetErrors() ?? new Error[0]);
+                if (statement is FunctionDeclaration)
+                    errors.AddRange(((FunctionDeclaration) statement).Body?.GetErrors() ?? new Error[0]);
+                
+                // IMPORTANT: When using blocks inside of a statement, make sure to check if the block contains errors
+                // Needed for recursion checking
+            }
+
+            return errors.ToArray();
+        }
+        
+        public int Line { get; set; }
+        public int Char { get; set; }
+        public bool CanRunInGlobalScope { get; set; }
 
         public bool Valid()
         {
@@ -447,30 +614,45 @@ public class Parser
     {
         public string Name;
         public Token.Token Token;
+        public int Line { get; set; }
+        public int Char { get; set; }
+        public bool CanRunInGlobalScope { get; set; }
     }
 
     public struct Float : IAst
     {
         public string Name;
         public Token.Token Token;
+        public int Line { get; set; }
+        public int Char { get; set; }
+        public bool CanRunInGlobalScope { get; set; }
     }
 
     public struct Boolean : IAst
     {
         public string Name;
         public Token.Token Token;
+        public int Line { get; set; }
+        public int Char { get; set; }
+        public bool CanRunInGlobalScope { get; set; }
     }
 
     public struct String : IAst
     {
         public string Name;
         public Token.Token Token;
+        public int Line { get; set; }
+        public int Char { get; set; }
+        public bool CanRunInGlobalScope { get; set; }
     }
 
     public struct Variable : IAst
     {
         public string Name;
         public Token.Token Token;
+        public int Line { get; set; }
+        public int Char { get; set; }
+        public bool CanRunInGlobalScope { get; set; }
     }
 
     public struct BinaryOp : IAst
@@ -479,6 +661,10 @@ public class Parser
         public IAst? Left;
         public Token.Token Op;
         public IAst? Right;
+
+        public int Line { get; set; }
+        public int Char { get; set; }
+        public bool CanRunInGlobalScope { get; set; }
 
         public bool Valid()
         {
@@ -491,6 +677,10 @@ public class Parser
         public string Name;
         public Token.Token VariableName;
         public IAst? Value;
+
+        public int Line { get; set; }
+        public int Char { get; set; }
+        public bool CanRunInGlobalScope { get; set; }
 
         public bool Valid()
         {
@@ -505,6 +695,10 @@ public class Parser
         public Token.Token Op;
         public IAst Value;
 
+        public int Line { get; set; }
+        public int Char { get; set; }
+        public bool CanRunInGlobalScope { get; set; }
+
         public bool Valid()
         {
             return VariableName != null && Value != null;
@@ -517,6 +711,10 @@ public class Parser
         public Token.Token Op;
         public IAst? Expr;
 
+        public int Line { get; set; }
+        public int Char { get; set; }
+        public bool CanRunInGlobalScope { get; set; }
+
         public bool Valid()
         {
             return Expr != null;
@@ -528,6 +726,10 @@ public class Parser
         public string Name;
         public IAst? Condition;
         public Block? Body;
+
+        public int Line { get; set; }
+        public int Char { get; set; }
+        public bool CanRunInGlobalScope { get; set; }
 
         public bool Valid()
         {
@@ -542,6 +744,10 @@ public class Parser
         public Token.Token[] Arguments;
         public Block? Body;
 
+        public int Line { get; set; }
+        public int Char { get; set; }
+        public bool CanRunInGlobalScope { get; set; }
+
         public bool Valid()
         {
             return FunctionName != null && Body != null;
@@ -554,6 +760,10 @@ public class Parser
         public Token.Token FunctionName;
         public IAst?[] Arguments;
 
+        public int Line { get; set; }
+        public int Char { get; set; }
+        public bool CanRunInGlobalScope { get; set; }
+
         public bool Valid()
         {
             return FunctionName != null;
@@ -565,21 +775,13 @@ public class Parser
         public string Name;
         public IAst? Expr;
 
+        public int Line { get; set; }
+        public int Char { get; set; }
+        public bool CanRunInGlobalScope { get; set; }
+
         public bool Valid()
         {
             return Expr != null;
-        }
-    }
-
-    public struct Scope : IAst
-    {
-        public string Name;
-        public Token.Token ScopeName;
-        public Block? Body;
-
-        public bool Valid()
-        {
-            return Body != null;
         }
     }
 }

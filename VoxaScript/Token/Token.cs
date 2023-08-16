@@ -1,4 +1,6 @@
-﻿namespace VoxaScript.Token;
+﻿using VoxaScript.Error;
+
+namespace VoxaScript.Token;
 
 public class Token
 {
@@ -13,7 +15,8 @@ public class Token
         ScopeIdentifier,
         Literal,
         Eof,
-        Unknown
+        Unknown,
+        Error
     }
 
     // Descriptive list of tokens
@@ -98,15 +101,23 @@ public class Token
 
     public static int MaxTokenLength;
 
-    public Token(Type tokenType, string value)
+    public Token(Type tokenType, string value, ErrorMessages.Error error = ErrorMessages.Error.None)
     {
         TokenType = tokenType;
         Value = value;
+        Error = error;
     }
 
     public Type TokenType { get; set; }
     public string Value { get; set; }
 
+    public int atLine { get; set; }
+    public int atChar { get; set; }
+    
+    public ErrorMessages.Error Error { get; set; }
+    public bool IsError => Error != ErrorMessages.Error.None;
+    public Parser.Parser.Error AsParserError => new Parser.Parser.Error { Line = atLine, Char = atChar, Name = Error, CanRunInGlobalScope = true };
+    
     public static void Init()
     {
         foreach (var tokenList in new[]
@@ -167,6 +178,12 @@ public class Token
         }
 
         return new Token(Type.Unknown, string.Join("", nextChars));
+    }
+    
+    public void AddLocationData(int line, int character)
+    {
+        atLine = line;
+        atChar = character;
     }
 
     public bool IsInt()

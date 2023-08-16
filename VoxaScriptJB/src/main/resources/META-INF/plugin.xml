@@ -24,7 +24,6 @@
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.java</depends>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
@@ -39,17 +38,11 @@
         <lang.syntaxHighlighterFactory
                 language="VoxaScript"
                 implementationClass="homeworkstudios.language.VoxaScriptSyntaxHighlighterFactory"/>
-        <annotator
-                language="JAVA"
-                implementationClass="homeworkstudios.language.VoxaScriptAnnotator"/>
-        <codeInsight.lineMarkerProvider
-                language="JAVA"
-                implementationClass="homeworkstudios.language.VoxaScriptLineMarkerProvider"/>
+
+
         <completion.contributor
                 language="VoxaScript"
                 implementationClass="homeworkstudios.language.VoxaScriptCompletionContributor"/>
-        <psi.referenceContributor language="JAVA"
-                                  implementation="homeworkstudios.language.VoxaScriptReferenceContributor"/>
         <lang.refactoringSupport
                 language="VoxaScript"
                 implementationClass="homeworkstudios.language.VoxaScriptRefactoringSupportProvider"/>

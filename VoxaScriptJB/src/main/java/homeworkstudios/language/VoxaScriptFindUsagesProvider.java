@@ -55,7 +55,7 @@ public class VoxaScriptFindUsagesProvider implements FindUsagesProvider {
     public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
         if (element instanceof VoxaScriptProperty) {
             return ((VoxaScriptProperty) element).getKey() +
-                    VoxaScriptAnnotator.VoxaScript_SEPARATOR_STR +
+                    " : " +
                     ((VoxaScriptProperty) element).getValue();
         }
         return "";

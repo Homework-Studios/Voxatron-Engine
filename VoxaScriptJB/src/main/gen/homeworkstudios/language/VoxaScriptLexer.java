@@ -102,13 +102,12 @@ public class VoxaScriptLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\4\0\1\1\1\2\1\3\1\1\1\4\1\3\1\5"+
-    "\1\3\4\1\1\6\1\7\5\0\1\10\3\0\1\11"+
-    "\5\0\3\12\1\0\1\11\11\0\3\12\7\0\1\12"+
-    "\3\0\1\12\1\0\1\13";
+    "\2\0\1\1\1\2\1\3\1\1\1\4\1\3\1\5"+
+    "\1\3\4\1\1\6\1\7\1\0\1\10\4\0\1\11"+
+    "\4\0\3\12\1\11\2\0\1\13\1\14\10\0\1\15";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[64];
+    int [] result = new int[44];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -133,17 +132,15 @@ public class VoxaScriptLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\36\0\74\0\132\0\170\0\226\0\170\0\264"+
-    "\0\170\0\322\0\360\0\u010e\0\u012c\0\u014a\0\u0168\0\u0186"+
-    "\0\u01a4\0\170\0\u01c2\0\u01e0\0\170\0\u01fe\0\264\0\170"+
-    "\0\u021c\0\u023a\0\u0258\0\170\0\u0276\0\u0294\0\u02b2\0\u02d0"+
-    "\0\u02ee\0\170\0\u023a\0\u030c\0\u032a\0\u0348\0\u0366\0\u0384"+
-    "\0\u03a2\0\u03c0\0\u03de\0\u03fc\0\u041a\0\u0438\0\u0456\0\u0474"+
-    "\0\u03de\0\u0492\0\u04b0\0\u04ce\0\u04ec\0\u050a\0\u02ee\0\u0474"+
-    "\0\u0528\0\u032a\0\u0546\0\u0564\0\u0582\0\u04ce\0\u05a0\0\170";
+    "\0\0\0\36\0\74\0\132\0\74\0\170\0\74\0\226"+
+    "\0\264\0\322\0\360\0\u010e\0\u012c\0\u014a\0\u0168\0\74"+
+    "\0\170\0\74\0\u0186\0\u01a4\0\u01c2\0\u01e0\0\74\0\u01fe"+
+    "\0\u021c\0\u023a\0\u0258\0\74\0\u01c2\0\u0276\0\u0294\0\u02b2"+
+    "\0\u02d0\0\74\0\74\0\u02ee\0\u030c\0\u032a\0\u0348\0\u0366"+
+    "\0\u0384\0\u03a2\0\u03c0\0\74";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[64];
+    int [] result = new int[44];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -166,34 +163,22 @@ public class VoxaScriptLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpacktrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\5\2\6\1\5\2\6\1\7\1\10\1\7\1\11"+
-    "\1\12\1\13\1\14\2\5\1\15\1\16\2\5\1\17"+
-    "\3\5\1\20\3\5\1\7\1\21\1\22\36\5\12\0"+
-    "\1\23\25\0\1\24\1\0\2\25\4\0\1\26\62\0"+
-    "\2\6\1\0\2\6\30\0\7\27\1\30\21\27\1\31"+
-    "\4\27\12\0\1\32\36\0\1\13\36\0\1\7\47\0"+
-    "\1\33\26\0\1\34\42\0\1\35\26\0\1\36\50\0"+
-    "\1\37\17\0\1\40\30\0\1\25\40\0\1\41\25\0"+
-    "\2\27\4\0\30\27\2\32\1\42\1\32\1\43\1\44"+
-    "\4\32\1\45\23\32\21\0\1\46\34\0\1\47\41\0"+
-    "\1\34\44\0\1\50\2\0\2\40\1\0\2\40\1\0"+
-    "\30\40\10\51\1\52\1\51\1\41\23\51\2\0\1\42"+
-    "\33\0\2\32\1\42\1\32\1\43\1\44\2\32\1\53"+
-    "\1\32\1\45\23\32\16\0\1\54\40\0\1\55\51\0"+
-    "\1\56\10\51\1\57\1\51\1\41\23\51\10\0\1\41"+
-    "\1\0\1\25\23\0\2\53\1\60\1\53\1\61\1\62"+
-    "\2\53\1\63\1\53\1\64\23\53\25\0\1\65\35\0"+
-    "\1\34\42\0\1\66\3\0\10\51\1\57\1\51\1\67"+
-    "\23\51\10\70\1\71\27\70\1\60\5\70\1\71\25\70"+
-    "\2\53\1\60\1\53\1\61\1\62\4\53\1\72\25\53"+
-    "\1\60\1\53\1\61\1\62\2\53\1\73\1\53\1\64"+
-    "\23\53\20\0\1\74\25\0\1\75\25\0\12\70\1\42"+
-    "\23\70\2\53\1\60\1\53\1\61\1\62\2\53\1\73"+
-    "\1\53\1\76\23\53\22\0\1\77\50\0\1\100\21\0"+
-    "\1\34\14\0";
+    "\1\3\2\4\1\3\2\4\1\5\1\6\1\5\1\7"+
+    "\1\10\1\11\1\12\2\3\1\13\1\14\2\3\1\15"+
+    "\3\3\1\16\3\3\1\5\1\17\1\20\36\3\37\0"+
+    "\2\4\1\0\2\4\30\0\7\21\1\22\21\21\1\23"+
+    "\4\21\10\0\1\24\1\0\1\25\36\0\1\11\36\0"+
+    "\1\5\47\0\1\26\26\0\1\27\42\0\1\30\26\0"+
+    "\1\31\50\0\1\32\5\0\2\21\4\0\30\21\10\24"+
+    "\1\33\25\24\2\25\1\34\1\25\1\35\1\36\30\25"+
+    "\21\0\1\37\34\0\1\40\41\0\1\27\44\0\1\41"+
+    "\2\0\12\24\1\42\23\24\2\0\1\43\51\0\1\44"+
+    "\40\0\1\45\51\0\1\46\25\0\1\47\35\0\1\27"+
+    "\42\0\1\50\23\0\1\51\25\0\1\52\47\0\1\53"+
+    "\50\0\1\54\21\0\1\27\14\0";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[1470];
+    int [] result = new int[990];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -231,13 +216,12 @@ public class VoxaScriptLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\4\0\1\11\1\1\1\11\1\1\1\11\10\1\1\11"+
-    "\1\0\1\1\1\11\2\0\1\11\3\0\1\11\3\0"+
-    "\1\1\1\0\1\11\2\1\1\0\1\1\11\0\3\1"+
-    "\4\0\1\1\2\0\1\1\3\0\1\1\1\0\1\11";
+    "\2\0\1\11\1\1\1\11\1\1\1\11\10\1\1\11"+
+    "\1\0\1\11\4\0\1\11\4\0\1\11\3\1\2\0"+
+    "\2\11\10\0\1\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[64];
+    int [] result = new int[44];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -283,9 +267,6 @@ public class VoxaScriptLexer implements FlexLexer {
 
   /** zzAtEOF == true <=> the scanner is at the EOF */
   private boolean zzAtEOF;
-
-  /** For the backwards DFA of general lookahead statements */
-  private boolean [] zzFin = new boolean [Math.min(ZZ_BUFFERSIZE, zzMaxBufferLen())+1];
 
   /** Number of newlines encountered up to the start of the matched text. */
   @SuppressWarnings("unused")
@@ -567,86 +548,73 @@ public class VoxaScriptLexer implements FlexLexer {
             { return TokenType.BAD_CHARACTER;
             }
           // fall through
-          case 12: break;
+          case 14: break;
           case 2:
             { return TokenType.WHITE_SPACE;
             }
           // fall through
-          case 13: break;
+          case 15: break;
           case 3:
             { return VoxaScriptTypes.SEPARATOR;
             }
           // fall through
-          case 14: break;
+          case 16: break;
           case 4:
             { return VoxaScriptTypes.COMMA;
             }
           // fall through
-          case 15: break;
+          case 17: break;
           case 5:
             { return VoxaScriptTypes.NUM;
             }
           // fall through
-          case 16: break;
+          case 18: break;
           case 6:
             { return VoxaScriptTypes.BLOCK_START;
             }
           // fall through
-          case 17: break;
+          case 19: break;
           case 7:
             { return VoxaScriptTypes.BLOCK_END;
             }
           // fall through
-          case 18: break;
+          case 20: break;
           case 8:
             { return VoxaScriptTypes.TEXT;
             }
           // fall through
-          case 19: break;
+          case 21: break;
           case 9:
             { return VoxaScriptTypes.DEFAULT_FUN;
             }
           // fall through
-          case 20: break;
+          case 22: break;
           case 10:
-            // general lookahead, find correct zzMarkedPos
-            { int zzFState = 2;
-              int zzFPos = zzStartRead;
-              if (zzFin.length <= zzBufferL.length()) {
-                zzFin = new boolean[zzBufferL.length()+1];
-              }
-              boolean zzFinL[] = zzFin;
-              while (zzFState != -1 && zzFPos < zzMarkedPos) {
-                zzFinL[zzFPos] = ((zzAttrL[zzFState] & 1) == 1);
-                zzInput = Character.codePointAt(zzBufferL, zzFPos);
-                zzFPos += Character.charCount(zzInput);
-                zzFState = zzTransL[ zzRowMapL[zzFState] + zzCMap(zzInput) ];
-              }
-              if (zzFState != -1) {
-                zzFinL[zzFPos++] = ((zzAttrL[zzFState] & 1) == 1);
-              }
-              while (zzFPos <= zzMarkedPos) {
-                zzFinL[zzFPos++] = false;
-              }
-
-              zzFState = 3;
-              zzFPos = zzMarkedPos;
-              while (!zzFinL[zzFPos] || (zzAttrL[zzFState] & 1) != 1) {
-                zzInput = Character.codePointBefore(zzBufferL, zzFPos);
-                zzFPos -= Character.charCount(zzInput);
-                zzFState = zzTransL[ zzRowMapL[zzFState] + zzCMap(zzInput) ];
-              };
-              zzMarkedPos = zzFPos;
-            }
+            // lookahead expression with fixed lookahead length
+            zzMarkedPos = Character.offsetByCodePoints
+                (zzBufferL, zzMarkedPos, -1);
             { return VoxaScriptTypes.COMMENT;
             }
           // fall through
-          case 21: break;
+          case 23: break;
           case 11:
+            { return VoxaScriptTypes.COMMENT;
+            }
+          // fall through
+          case 24: break;
+          case 12:
+            // lookahead expression with fixed lookahead length
+            zzMarkedPos = Character.offsetByCodePoints
+                (zzBufferL, zzMarkedPos, -2);
+            { return VoxaScriptTypes.COMMENT;
+            }
+          // fall through
+          case 25: break;
+          case 13:
             { return VoxaScriptTypes.CODE_BLOCK;
             }
           // fall through
-          case 22: break;
+          case 26: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

@@ -56,7 +56,8 @@ BLOCK_COMMENT = \/\*([^*]|\*[^/])*\*\/
 <YYINITIAL> {
 {NUM}                                                    { return VoxaScriptTypes.NUM; }
 {WHITE_SPACE}                                               { return TokenType.WHITE_SPACE; }
-{LINE_COMMENT}/{EOL}|{BLOCK_COMMENT}                        { return VoxaScriptTypes.COMMENT; }
+{LINE_COMMENT}/{EOL}                                        { return VoxaScriptTypes.COMMENT; }
+{BLOCK_COMMENT}                                             { return VoxaScriptTypes.COMMENT; }
 {TEXT}                                                      { return VoxaScriptTypes.TEXT; }
 {COMMA_SEP}                                                 { return VoxaScriptTypes.COMMA; }
 {ALL_SEPERATORS}                                            { return VoxaScriptTypes.SEPARATOR; }

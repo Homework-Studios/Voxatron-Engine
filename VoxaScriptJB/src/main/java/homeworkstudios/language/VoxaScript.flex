@@ -34,8 +34,18 @@ import java.util.LinkedList;
 EOL= (\r|\n|\r\n|\f)
 LINE_WS=[\ \t]
 WHITE_SPACE=({LINE_WS}|{EOL})+
-ARG_SEPARATOR={WHITE_SPACE}|","
+MATH_OPERATOR===|[+\-*/%<>!&|\^=]
+NUM = [0-9]+
+TEXT = \"([^\\\"]|\\.)*\"
+COMMA_SEP = ","
 
+DEFAULT_FUN = "var"|"fun"|"function"|"if"|"print"
+
+BLOCK_START = "{"
+BLOCK_END = "}"
+CODE_BLOCK = "{[^}]*}"
+
+ALL_SEPERATORS = {MATH_OPERATOR}
 LINE_COMMENT = \/\/[^\r\n]*
 BLOCK_COMMENT = \/\*([^*]|\*[^/])*\*\/
 
@@ -44,8 +54,15 @@ BLOCK_COMMENT = \/\*([^*]|\*[^/])*\*\/
 %%
 
 <YYINITIAL> {
+{NUM}                                                    { return VoxaScriptTypes.NUM; }
 {WHITE_SPACE}                                               { return TokenType.WHITE_SPACE; }
-{LINE_COMMENT}/{EOL}                                        { return VoxaScriptTypes.COMMENT; }
-{BLOCK_COMMENT}                                             { return VoxaScriptTypes.COMMENT; }
+{LINE_COMMENT}/{EOL}|{BLOCK_COMMENT}                        { return VoxaScriptTypes.COMMENT; }
+{TEXT}                                                      { return VoxaScriptTypes.TEXT; }
+{COMMA_SEP}                                                 { return VoxaScriptTypes.COMMA; }
+{ALL_SEPERATORS}                                            { return VoxaScriptTypes.SEPARATOR; }
+{DEFAULT_FUN}                                               { return VoxaScriptTypes.DEFAULT_FUN; }
+{BLOCK_START}                                               { return VoxaScriptTypes.BLOCK_START; }
+{BLOCK_END}                                                 { return VoxaScriptTypes.BLOCK_END; }
+{CODE_BLOCK}                                                { return VoxaScriptTypes.CODE_BLOCK; }
 }
 [^]                                                         { return TokenType.BAD_CHARACTER; }

@@ -39,8 +39,6 @@
         <lang.syntaxHighlighterFactory
                 language="VoxaScript"
                 implementationClass="homeworkstudios.language.VoxaScriptSyntaxHighlighterFactory"/>
-        <colorSettingsPage
-                implementation="homeworkstudios.language.VoxaScriptColorSettingsPage"/>
         <annotator
                 language="JAVA"
                 implementationClass="homeworkstudios.language.VoxaScriptAnnotator"/>
@@ -63,9 +61,6 @@
         <gotoSymbolContributor implementation="homeworkstudios.language.VoxaScriptChooseByNameContributor"/>
         <lang.formatter language="VoxaScript"
                         implementationClass="homeworkstudios.language.VoxaScriptFormattingModelBuilder"/>
-        <codeStyleSettingsProvider implementation="homeworkstudios.language.VoxaScriptCodeStyleSettingsProvider"/>
-        <langCodeStyleSettingsProvider
-                implementation="homeworkstudios.language.VoxaScriptLanguageCodeStyleSettingsProvider"/>
         <lang.commenter language="VoxaScript" implementationClass="homeworkstudios.language.VoxaScriptCommenter"/>
         <lang.documentationProvider language="VoxaScript"
                                     implementationClass="homeworkstudios.language.VoxaScriptDocumentationProvider"/>

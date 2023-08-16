@@ -8,6 +8,7 @@ public class VoxaScriptLanguage extends Language {
 
     private VoxaScriptLanguage() {
         super("VoxaScript");
+        VoxaScriptTextAttributes.init();
     }
 
 }

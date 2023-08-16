@@ -48,6 +48,66 @@ public class VoxaScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // BLOCK_END
+  public static boolean blockend(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "blockend")) return false;
+    if (!nextTokenIs(b, BLOCK_END)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, BLOCK_END);
+    exit_section_(b, m, BLOCKEND, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // BLOCK_START
+  public static boolean blockstart(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "blockstart")) return false;
+    if (!nextTokenIs(b, BLOCK_START)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, BLOCK_START);
+    exit_section_(b, m, BLOCKSTART, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // CODE_BLOCK
+  public static boolean codeblock(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "codeblock")) return false;
+    if (!nextTokenIs(b, CODE_BLOCK)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, CODE_BLOCK);
+    exit_section_(b, m, CODEBLOCK, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // COMMA_SEP
+  public static boolean comma(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comma")) return false;
+    if (!nextTokenIs(b, COMMA_SEP)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA_SEP);
+    exit_section_(b, m, COMMA, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // DEFAULT_FUN
+  public static boolean default_$(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "default_$")) return false;
+    if (!nextTokenIs(b, DEFAULT_FUN)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, DEFAULT_FUN);
+    exit_section_(b, m, DEFAULT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // property|COMMENT|CRLF
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
@@ -55,6 +115,18 @@ public class VoxaScriptParser implements PsiParser, LightPsiParser {
     r = property(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, CRLF);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // NUM
+  public static boolean number(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "number")) return false;
+    if (!nextTokenIs(b, NUM)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, NUM);
+    exit_section_(b, m, NUMBER, r);
     return r;
   }
 
@@ -95,6 +167,18 @@ public class VoxaScriptParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "property_0_2")) return false;
     consumeToken(b, VALUE);
     return true;
+  }
+
+  /* ********************************************************** */
+  // TEXT
+  public static boolean string(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "string")) return false;
+    if (!nextTokenIs(b, TEXT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, TEXT);
+    exit_section_(b, m, STRING, r);
+    return r;
   }
 
 }

@@ -17,6 +17,15 @@
 
 VoxaScriptFile ::= item_*
 
+
+number ::= NUM
+default ::= DEFAULT_FUN
+string ::= TEXT
+comma ::= COMMA_SEP
+blockstart ::= BLOCK_START
+blockend ::= BLOCK_END
+codeblock ::= CODE_BLOCK
+
 private item_ ::= (property|COMMENT|CRLF)
 
 property ::= (KEY? SEPARATOR VALUE?) | KEY {

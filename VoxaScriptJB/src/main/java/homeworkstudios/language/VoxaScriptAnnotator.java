@@ -59,7 +59,7 @@ public class VoxaScriptAnnotator implements Annotator {
         } else {
             // Found at least one property, force the text attributes to VoxaScript syntax value character
             holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
-                    .range(keyRange).textAttributes(VoxaScriptSyntaxHighlighter.VALUE).create();
+                    .range(keyRange).textAttributes(VoxaScriptSyntaxHighlighter.DEFAULT_FUN).create();
         }
     }
 

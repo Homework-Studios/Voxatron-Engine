@@ -27,10 +27,6 @@ public class VoxaScriptVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitNumber(@NotNull VoxaScriptNumber o) {
-    visitPsiElement(o);
-  }
-
   public void visitProperty(@NotNull VoxaScriptProperty o) {
     visitNamedElement(o);
   }

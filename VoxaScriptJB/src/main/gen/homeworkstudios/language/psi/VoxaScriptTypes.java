@@ -13,7 +13,6 @@ public interface VoxaScriptTypes {
   IElementType CODEBLOCK = new VoxaScriptElementType("CODEBLOCK");
   IElementType COMMA = new VoxaScriptElementType("COMMA");
   IElementType DEFAULT = new VoxaScriptElementType("DEFAULT");
-  IElementType NUMBER = new VoxaScriptElementType("NUMBER");
   IElementType PROPERTY = new VoxaScriptElementType("PROPERTY");
   IElementType STRING = new VoxaScriptElementType("STRING");
 
@@ -47,9 +46,6 @@ public interface VoxaScriptTypes {
       }
       else if (type == DEFAULT) {
         return new VoxaScriptDefaultImpl(node);
-      }
-      else if (type == NUMBER) {
-        return new VoxaScriptNumberImpl(node);
       }
       else if (type == PROPERTY) {
         return new VoxaScriptPropertyImpl(node);

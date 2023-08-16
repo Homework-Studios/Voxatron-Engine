@@ -15,17 +15,6 @@
   psiImplUtilClass="homeworkstudios.language.psi.impl.VoxaScriptPsiImplUtil"
 }
 
-number ::= NUMBER
-default ::= DEFAULT_FUN
-string ::= TEXT
-comma ::= COMMA_SEP
-blockstart ::= BLOCK_START
-blockend ::= BLOCK_END
-codeblock ::= CODE_BLOCK
-
-VoxaScriptFile ::= item_*
-
-
 number ::= NUM
 default ::= DEFAULT_FUN
 string ::= TEXT
@@ -37,4 +26,7 @@ codeblock ::= CODE_BLOCK
 private item_ ::= (property|COMMENT|CRLF)
 
 property ::= (KEY? SEPARATOR VALUE?) | KEY {
-  mixin="homeworkstudios.language.psi.impl.VoxaScriptNamed
+  mixin="homeworkstudios.language.psi.impl.VoxaScriptNamedElementImpl"
+  implements="homeworkstudios.language.psi.VoxaScriptNamedElement"
+  methods=[getKey getValue getName setName getNameIdentifier getPresentation]
+}

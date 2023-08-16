@@ -4,8 +4,8 @@ import com.intellij.formatting.*
 import com.intellij.lang.ASTNode
 import com.intellij.psi.TokenType
 import com.intellij.psi.formatter.common.AbstractBlock
+import com.intellij.psi.tree.IElementType
 import homeworkstudios.language.psi.VoxaScriptTypes
-import java.util.List
 
 class VoxaScriptBlock(node: ASTNode, wrap: Wrap?, alignment: Alignment?) : AbstractBlock(node, wrap, alignment) {
     override fun getIndent(): Indent {
@@ -44,7 +44,7 @@ class VoxaScriptBlock(node: ASTNode, wrap: Wrap?, alignment: Alignment?) : Abstr
         while (child != null) {
             val skip = child.textRange.length == 0 || child.elementType === TokenType.WHITE_SPACE
             if (!skip) {
-                blocks.add(CssBlock(child, null, null))
+                blocks.add(VoxaScriptBlock(child, null, null))
             }
             child = child.treeNext
         }
@@ -53,7 +53,7 @@ class VoxaScriptBlock(node: ASTNode, wrap: Wrap?, alignment: Alignment?) : Abstr
 
     override fun getChildAttributes(newChildIndex: Int): ChildAttributes {
         val subBlocks = subBlocks
-        fun isBraceSubBlock(index: Int, braceElementType: TokenIElementType): Boolean {
+        fun isBraceSubBlock(index: Int, braceElementType: IElementType): Boolean {
             if (index >= 0 && index < subBlocks.size) {
                 val subBlock = subBlocks[index]
                 if (subBlock.isLeaf && subBlock.textRange.length == 1) {
@@ -82,16 +82,8 @@ class VoxaScriptBlock(node: ASTNode, wrap: Wrap?, alignment: Alignment?) : Abstr
         //TODO: do not duplicate logic from getIndent
         val element = myNode.psi
 
-        if (element is CssFile) {
+        if (element is VoxaScriptFile) {
             return Indent.getNoneIndent()
-        }
-
-        if (element is CssDeclarationList) {
-            return Indent.getNormalIndent()
-        }
-
-        if (element is CssSupportsRule) {
-            return Indent.getNormalIndent()
         }
 
         return super.getChildIndent()

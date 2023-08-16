@@ -32,19 +32,7 @@ public class VoxaScriptParser implements PsiParser, LightPsiParser {
   }
 
   static boolean parse_root_(IElementType t, PsiBuilder b, int l) {
-    return VoxaScriptFile(b, l + 1);
-  }
-
-  /* ********************************************************** */
-  // item_*
-  static boolean VoxaScriptFile(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "VoxaScriptFile")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!item_(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "VoxaScriptFile", c)) break;
-    }
-    return true;
+    return number(b, l + 1);
   }
 
   /* ********************************************************** */
@@ -120,14 +108,8 @@ public class VoxaScriptParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // NUM
-  public static boolean number(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "number")) return false;
-    if (!nextTokenIs(b, NUM)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, NUM);
-    exit_section_(b, m, NUMBER, r);
-    return r;
+  static boolean number(PsiBuilder b, int l) {
+    return consumeToken(b, NUM);
   }
 
   /* ********************************************************** */

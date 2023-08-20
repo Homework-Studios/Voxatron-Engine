@@ -11,20 +11,26 @@ import static homeworkstudios.language.psi.VoxaScriptTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import homeworkstudios.language.psi.*;
 
-public class VoxaScriptDefaultImpl extends ASTWrapperPsiElement implements VoxaScriptDefault {
+public class VoxaScriptVoxaScriptFileImpl extends ASTWrapperPsiElement implements VoxaScriptVoxaScriptFile {
 
-  public VoxaScriptDefaultImpl(@NotNull ASTNode node) {
+  public VoxaScriptVoxaScriptFileImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull VoxaScriptVisitor visitor) {
-    visitor.visitDefault(this);
+    visitor.visitVoxaScriptFile(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof VoxaScriptVisitor) accept((VoxaScriptVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @NotNull
+  public List<VoxaScriptVar> getVarList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, VoxaScriptVar.class);
   }
 
 }

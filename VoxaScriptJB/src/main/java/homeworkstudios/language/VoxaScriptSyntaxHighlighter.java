@@ -31,6 +31,14 @@ public class VoxaScriptSyntaxHighlighter extends SyntaxHighlighterBase {
             createTextAttributesKey("VoxaScript_BLOCK_END", VoxaScriptTextAttributes.BRACES);
     public static final TextAttributesKey NUM =
             createTextAttributesKey("VoxaScript_NUM", VoxaScriptTextAttributes.NUM);
+    public static final TextAttributesKey VAR_TOKEN =
+            createTextAttributesKey("VoxaScript_VAR_TOKEN", VoxaScriptTextAttributes.VAR_TOKEN);
+    public static final TextAttributesKey SEMICOLON =
+            createTextAttributesKey("VoxaScript_SEMICOLON", DefaultLanguageHighlighterColors.SEMICOLON);
+    public static final TextAttributesKey PARAM_START =
+            createTextAttributesKey("VoxaScript_PARAM_START", VoxaScriptTextAttributes.BRACES);
+    public static final TextAttributesKey PARAM_END =
+            createTextAttributesKey("VoxaScript_PARAM_END", VoxaScriptTextAttributes.BRACES);
 
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
     private static final TextAttributesKey[] SEPARATOR_KEYS = new TextAttributesKey[]{SEPARATOR};
@@ -38,7 +46,11 @@ public class VoxaScriptSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] DEFAULT_FUN_KEYS = new TextAttributesKey[]{DEFAULT_FUN};
     private static final TextAttributesKey[] TEXT_KEYS = new TextAttributesKey[]{TEXT};
     private static final TextAttributesKey[] BLOCK_KEYS = new TextAttributesKey[]{BLOCK_END, BLOCK_START};
+    private static final TextAttributesKey[] PARAM_KEYS = new TextAttributesKey[]{PARAM_END, PARAM_START};
+    private static final TextAttributesKey[] SEMICOLON_KEYS = new TextAttributesKey[]{SEMICOLON};
+
     private static final TextAttributesKey[] NUM_KEYS = new TextAttributesKey[]{NUM};
+    private static final TextAttributesKey[] VAR_TOKEN_KEYS = new TextAttributesKey[]{VAR_TOKEN};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
     @NotNull
@@ -69,6 +81,15 @@ public class VoxaScriptSyntaxHighlighter extends SyntaxHighlighterBase {
         }
         if (tokenType.equals(VoxaScriptTypes.NUM)) {
             return NUM_KEYS;
+        }
+        if (tokenType.equals(VoxaScriptTypes.VAR_TOKEN)) {
+            return VAR_TOKEN_KEYS;
+        }
+        if (tokenType.equals(VoxaScriptTypes.SEMICOLON)) {
+            return SEMICOLON_KEYS;
+        }
+        if (tokenType.equals(VoxaScriptTypes.PARAM_START) || tokenType.equals(VoxaScriptTypes.PARAM_END)) {
+            return PARAM_KEYS;
         }
         return EMPTY_KEYS;
     }

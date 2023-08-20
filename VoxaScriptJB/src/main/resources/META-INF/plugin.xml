@@ -59,6 +59,11 @@
                                     implementationClass="homeworkstudios.language.VoxaScriptDocumentationProvider"/>
         <spellchecker.support language="VoxaScript"
                               implementationClass="homeworkstudios.language.VoxaScriptSpellcheckingStrategy"/>
+        <codeStyleSettingsProvider
+                implementation="homeworkstudios.language.VoxaScriptCodeStyleSettingsProvider"/>
+        <langCodeStyleSettingsProvider
+                implementation="homeworkstudios.language.VoxaScriptLanguageCodeStyleSettingsProvider"/>
+        <colorSettingsPage implementation="homeworkstudios.language.VoxaScriptColorSettingsPage"/>
     </extensions>
 
 </idea-plugin>

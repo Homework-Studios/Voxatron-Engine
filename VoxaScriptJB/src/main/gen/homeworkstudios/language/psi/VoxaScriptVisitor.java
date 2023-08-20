@@ -7,6 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public class VoxaScriptVisitor extends PsiElementVisitor {
 
+  public void visitVoxaScriptFile(@NotNull VoxaScriptVoxaScriptFile o) {
+    visitPsiElement(o);
+  }
+
   public void visitBlockend(@NotNull VoxaScriptBlockend o) {
     visitPsiElement(o);
   }
@@ -23,7 +27,15 @@ public class VoxaScriptVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitDefault(@NotNull VoxaScriptDefault o) {
+  public void visitNumber(@NotNull VoxaScriptNumber o) {
+    visitPsiElement(o);
+  }
+
+  public void visitParamend(@NotNull VoxaScriptParamend o) {
+    visitPsiElement(o);
+  }
+
+  public void visitParamstart(@NotNull VoxaScriptParamstart o) {
     visitPsiElement(o);
   }
 
@@ -32,6 +44,10 @@ public class VoxaScriptVisitor extends PsiElementVisitor {
   }
 
   public void visitString(@NotNull VoxaScriptString o) {
+    visitPsiElement(o);
+  }
+
+  public void visitVar(@NotNull VoxaScriptVar o) {
     visitPsiElement(o);
   }
 

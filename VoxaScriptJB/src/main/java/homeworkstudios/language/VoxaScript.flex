@@ -34,18 +34,24 @@ import java.util.LinkedList;
 EOL= (\r|\n|\r\n|\f)
 LINE_WS=[\ \t]
 WHITE_SPACE=({LINE_WS}|{EOL})+
-MATH_OPERATOR===|[+\-*/%<>!&|\^=]
+MATH_OPERATOR===|[+\-*/%<>!&|\^]
 NUM = [0-9]+
 TEXT = \"([^\\\"]|\\.)*\"
 COMMA_SEP = ","
+SEMICOLON = ";"
 
-DEFAULT_FUN = "var"|"fun"|"function"|"if"|"print"
+EQUALS = "="
+DEFAULT_FUN = "fun"|"function"|"if"|"print"
+VAR_TOKEN = "var"
+VAR_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 
 BLOCK_START = "{"
 BLOCK_END = "}"
+PARAM_START = "("
+PARAM_END = ")"
 CODE_BLOCK = "{[^}]*}"
 
-ALL_SEPERATORS = {MATH_OPERATOR}
+ALL_SEPERATORS = {MATH_OPERATOR}|{EQUALS}
 LINE_COMMENT = \/\/[^\r\n]*
 BLOCK_COMMENT = \/\*([^*]|\*[^/])*\*\/
 
@@ -54,16 +60,27 @@ BLOCK_COMMENT = \/\*([^*]|\*[^/])*\*\/
 %%
 
 <YYINITIAL> {
-{NUM}                                                    { return VoxaScriptTypes.NUM; }
-{WHITE_SPACE}                                               { return TokenType.WHITE_SPACE; }
+
 {LINE_COMMENT}/{EOL}                                        { return VoxaScriptTypes.COMMENT; }
 {BLOCK_COMMENT}                                             { return VoxaScriptTypes.COMMENT; }
-{TEXT}                                                      { return VoxaScriptTypes.TEXT; }
 {COMMA_SEP}                                                 { return VoxaScriptTypes.COMMA; }
 {ALL_SEPERATORS}                                            { return VoxaScriptTypes.SEPARATOR; }
 {DEFAULT_FUN}                                               { return VoxaScriptTypes.DEFAULT_FUN; }
+      /*
 {BLOCK_START}                                               { return VoxaScriptTypes.BLOCK_START; }
 {BLOCK_END}                                                 { return VoxaScriptTypes.BLOCK_END; }
 {CODE_BLOCK}                                                { return VoxaScriptTypes.CODE_BLOCK; }
+{EQUALS}                                                    { return VoxaScriptTypes.EQUALS; }
+{VAR_TOKEN}|{VAR_CHARACTER}                                 { return VoxaScriptTypes.VAR_TOKEN; }
+      {PARAM_START}                                               { return VoxaScriptTypes.PARAM_START; }
+       {PARAM_END}                                                 { return VoxaScriptTypes.PARAM_END; }}
+
+
+  */
+{SEMICOLON}                                                 { return VoxaScriptTypes.SEMICOLON; }
+           {NUM}                                                       { return VoxaScriptTypes.NUM; }
+      {TEXT}                                                      { return VoxaScriptTypes.TEXT; }
+
+      {WHITE_SPACE}                                               { return TokenType.WHITE_SPACE; }
 }
 [^]                                                         { return TokenType.BAD_CHARACTER; }

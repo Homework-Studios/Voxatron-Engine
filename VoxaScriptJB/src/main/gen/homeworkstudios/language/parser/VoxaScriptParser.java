@@ -32,7 +32,21 @@ public class VoxaScriptParser implements PsiParser, LightPsiParser {
   }
 
   static boolean parse_root_(IElementType t, PsiBuilder b, int l) {
-    return number(b, l + 1);
+    return default_$(b, l + 1);
+  }
+
+  /* ********************************************************** */
+  // item_*
+  public static boolean VoxaScriptFile(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "VoxaScriptFile")) return false;
+    Marker m = enter_section_(b, l, _NONE_, VOXA_SCRIPT_FILE, "<voxa script file>");
+    while (true) {
+      int c = current_position_(b);
+      if (!item_(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "VoxaScriptFile", c)) break;
+    }
+    exit_section_(b, l, m, true, false, null);
+    return true;
   }
 
   /* ********************************************************** */
@@ -85,22 +99,16 @@ public class VoxaScriptParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // DEFAULT_FUN
-  public static boolean default_$(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "default_$")) return false;
-    if (!nextTokenIs(b, DEFAULT_FUN)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, DEFAULT_FUN);
-    exit_section_(b, m, DEFAULT, r);
-    return r;
+  static boolean default_$(PsiBuilder b, int l) {
+    return consumeToken(b, DEFAULT_FUN);
   }
 
   /* ********************************************************** */
-  // property|COMMENT|CRLF
+  // var|COMMENT|CRLF
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
-    r = property(b, l + 1);
+    r = var(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, CRLF);
     return r;
@@ -108,8 +116,38 @@ public class VoxaScriptParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // NUM
-  static boolean number(PsiBuilder b, int l) {
-    return consumeToken(b, NUM);
+  public static boolean number(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "number")) return false;
+    if (!nextTokenIs(b, NUM)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, NUM);
+    exit_section_(b, m, NUMBER, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // PARAM_END
+  public static boolean paramend(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "paramend")) return false;
+    if (!nextTokenIs(b, PARAM_END)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, PARAM_END);
+    exit_section_(b, m, PARAMEND, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // PARAM_START
+  public static boolean paramstart(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "paramstart")) return false;
+    if (!nextTokenIs(b, PARAM_START)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, PARAM_START);
+    exit_section_(b, m, PARAMSTART, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -161,6 +199,27 @@ public class VoxaScriptParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, TEXT);
     exit_section_(b, m, STRING, r);
     return r;
+  }
+
+  /* ********************************************************** */
+  // VAR_TOKEN WHITE_SPACE KEY EQALS VALUE? SEMICOLON
+  public static boolean var(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "var")) return false;
+    if (!nextTokenIs(b, VAR_TOKEN)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, VAR_TOKEN, WHITE_SPACE, KEY, EQALS);
+    r = r && var_4(b, l + 1);
+    r = r && consumeToken(b, SEMICOLON);
+    exit_section_(b, m, VAR, r);
+    return r;
+  }
+
+  // VALUE?
+  private static boolean var_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "var_4")) return false;
+    consumeToken(b, VALUE);
+    return true;
   }
 
 }

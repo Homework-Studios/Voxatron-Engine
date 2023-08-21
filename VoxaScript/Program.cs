@@ -1,4 +1,5 @@
-﻿using VoxaScript;
+﻿using System.Security.Cryptography;
+using VoxaScript;
 using VoxaScript.Enviroment;
 using VoxaScript.Parser;
 

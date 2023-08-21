@@ -205,7 +205,6 @@ public class Token
 
     public float AsFloat()
     {
-        Console.WriteLine(Value + "  " + float.Parse(Value));
         return float.Parse(Value);
     }
 

@@ -113,11 +113,13 @@ public class Token
 
     public int atLine { get; set; }
     public int atChar { get; set; }
-    
+
     public ErrorMessages.Error Error { get; set; }
     public bool IsError => Error != ErrorMessages.Error.None;
-    public Parser.Parser.Error AsParserError => new Parser.Parser.Error { Line = atLine, Char = atChar, Name = Error, CanRunInGlobalScope = true };
-    
+
+    public Parser.Parser.Error AsParserError => new()
+        { Line = atLine, Char = atChar, Name = Error, CanRunInGlobalScope = true };
+
     public static void Init()
     {
         foreach (var tokenList in new[]
@@ -179,7 +181,7 @@ public class Token
 
         return new Token(Type.Unknown, string.Join("", nextChars));
     }
-    
+
     public void AddLocationData(int line, int character)
     {
         atLine = line;
@@ -203,6 +205,7 @@ public class Token
 
     public float AsFloat()
     {
+        Console.WriteLine(Value + "  " + float.Parse(Value));
         return float.Parse(Value);
     }
 

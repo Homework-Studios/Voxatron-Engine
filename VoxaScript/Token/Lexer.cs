@@ -87,9 +87,10 @@ public class Lexer
                 Consume(found.Value.Length);
                 continue;
             }
-
+           
             if (IsAlphaOrDot())
             {
+                
                 var value = "";
 
                 while (HasSource() && IsAlphaOrDot())
@@ -168,7 +169,7 @@ public class Lexer
     public static bool IsNumericOrDot()
     {
         if (!HasSource()) return false;
-        return Regex.IsMatch(_source[0].ToString(), "[0-9.]");
+        return Regex.IsMatch(_source[0].ToString(), "[0-9.,]");
     }
 
     public static char Consume(int lenght = 1)

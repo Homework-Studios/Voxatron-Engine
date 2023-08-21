@@ -12,6 +12,7 @@ public interface VoxaScriptTypes {
   IElementType BLOCKSTART = new VoxaScriptElementType("BLOCKSTART");
   IElementType CODEBLOCK = new VoxaScriptElementType("CODEBLOCK");
   IElementType COMMA = new VoxaScriptElementType("COMMA");
+  IElementType MATHOP = new VoxaScriptElementType("MATHOP");
   IElementType NUMBER = new VoxaScriptElementType("NUMBER");
   IElementType PARAMEND = new VoxaScriptElementType("PARAMEND");
   IElementType PARAMSTART = new VoxaScriptElementType("PARAMSTART");
@@ -27,8 +28,9 @@ public interface VoxaScriptTypes {
   IElementType COMMENT = new VoxaScriptTokenType("COMMENT");
   IElementType CRLF = new VoxaScriptTokenType("CRLF");
   IElementType DEFAULT_FUN = new VoxaScriptTokenType("DEFAULT_FUN");
-  IElementType EQALS = new VoxaScriptTokenType("EQALS");
+  IElementType EQUALS = new VoxaScriptTokenType("EQUALS");
   IElementType KEY = new VoxaScriptTokenType("KEY");
+  IElementType MATH_OPERATOR = new VoxaScriptTokenType("MATH_OPERATOR");
   IElementType NUM = new VoxaScriptTokenType("NUM");
   IElementType PARAM_END = new VoxaScriptTokenType("PARAM_END");
   IElementType PARAM_START = new VoxaScriptTokenType("PARAM_START");
@@ -36,8 +38,8 @@ public interface VoxaScriptTypes {
   IElementType SEPARATOR = new VoxaScriptTokenType("SEPARATOR");
   IElementType TEXT = new VoxaScriptTokenType("TEXT");
   IElementType VALUE = new VoxaScriptTokenType("VALUE");
+  IElementType VAR_CHARACTER = new VoxaScriptTokenType("VAR_CHARACTER");
   IElementType VAR_TOKEN = new VoxaScriptTokenType("VAR_TOKEN");
-  IElementType WHITE_SPACE = new VoxaScriptTokenType("WHITE_SPACE");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
@@ -53,6 +55,9 @@ public interface VoxaScriptTypes {
       }
       else if (type == COMMA) {
         return new VoxaScriptCommaImpl(node);
+      }
+      else if (type == MATHOP) {
+        return new VoxaScriptMathopImpl(node);
       }
       else if (type == NUMBER) {
         return new VoxaScriptNumberImpl(node);

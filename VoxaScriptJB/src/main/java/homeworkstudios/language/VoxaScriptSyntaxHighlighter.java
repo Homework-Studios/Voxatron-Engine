@@ -15,8 +15,8 @@ import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAtt
 @SuppressWarnings("deprecation")
 public class VoxaScriptSyntaxHighlighter extends SyntaxHighlighterBase {
 
-    public static final TextAttributesKey SEPARATOR =
-            createTextAttributesKey("VoxaScript_SEPARATOR", VoxaScriptTextAttributes.SEPARATOR);
+    public static final TextAttributesKey MATH_OPERATOR =
+            createTextAttributesKey("VoxaScript_MATH_OPERATOR", VoxaScriptTextAttributes.SEPARATOR);
     public static final TextAttributesKey COMMENT =
             createTextAttributesKey("VoxaScript_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey BAD_CHARACTER =
@@ -41,7 +41,7 @@ public class VoxaScriptSyntaxHighlighter extends SyntaxHighlighterBase {
             createTextAttributesKey("VoxaScript_PARAM_END", VoxaScriptTextAttributes.BRACES);
 
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
-    private static final TextAttributesKey[] SEPARATOR_KEYS = new TextAttributesKey[]{SEPARATOR};
+    private static final TextAttributesKey[] MATH_OPERATOR_KEYS = new TextAttributesKey[]{MATH_OPERATOR};
     private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
     private static final TextAttributesKey[] DEFAULT_FUN_KEYS = new TextAttributesKey[]{DEFAULT_FUN};
     private static final TextAttributesKey[] TEXT_KEYS = new TextAttributesKey[]{TEXT};
@@ -61,8 +61,8 @@ public class VoxaScriptSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @Override
     public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
-        if (tokenType.equals(VoxaScriptTypes.SEPARATOR)) {
-            return SEPARATOR_KEYS;
+        if (tokenType.equals(VoxaScriptTypes.MATH_OPERATOR)) {
+            return MATH_OPERATOR_KEYS;
         }
         if (tokenType.equals(VoxaScriptTypes.COMMENT)) {
             return COMMENT_KEYS;

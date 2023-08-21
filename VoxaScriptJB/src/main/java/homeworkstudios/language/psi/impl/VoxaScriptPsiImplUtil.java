@@ -14,11 +14,13 @@ import javax.swing.*;
 public class VoxaScriptPsiImplUtil {
 
     public static String getKey(VoxaScriptProperty element) {
-        ASTNode keyNode = element.getNode().findChildByType(VoxaScriptTypes.KEY);
+        ASTNode keyNode = element.getNode().findChildByType(VoxaScriptTypes.VAR_CHARACTER);
         if (keyNode != null) {
             // IMPORTANT: Convert embedded escaped spaces to VoxaScript spaces
             return keyNode.getText().replaceAll("\\\\ ", " ");
         } else {
+
+
             return null;
         }
     }
@@ -28,7 +30,7 @@ public class VoxaScriptPsiImplUtil {
     }
 
     public static PsiElement setName(VoxaScriptProperty element, String newName) {
-        ASTNode keyNode = element.getNode().findChildByType(VoxaScriptTypes.KEY);
+        ASTNode keyNode = element.getNode().findChildByType(VoxaScriptTypes.VAR_CHARACTER);
         if (keyNode != null) {
             VoxaScriptProperty property =
                     VoxaScriptElementFactory.createProperty(element.getProject(), newName);
@@ -39,7 +41,7 @@ public class VoxaScriptPsiImplUtil {
     }
 
     public static PsiElement getNameIdentifier(VoxaScriptProperty element) {
-        ASTNode keyNode = element.getNode().findChildByType(VoxaScriptTypes.KEY);
+        ASTNode keyNode = element.getNode().findChildByType(VoxaScriptTypes.VAR_CHARACTER);
         return keyNode != null ? keyNode.getPsi() : null;
     }
 

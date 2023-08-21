@@ -15,7 +15,7 @@ public class VoxaScriptColorSettingsPage implements ColorSettingsPage {
 
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
             new AttributesDescriptor("NUM", VoxaScriptSyntaxHighlighter.NUM),
-            new AttributesDescriptor("Separator", VoxaScriptSyntaxHighlighter.SEPARATOR),
+            new AttributesDescriptor("MATH_OPERATOR", VoxaScriptSyntaxHighlighter.MATH_OPERATOR),
             new AttributesDescriptor("Bad value", VoxaScriptSyntaxHighlighter.BAD_CHARACTER)
     };
 

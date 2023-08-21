@@ -115,6 +115,18 @@ public class VoxaScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // MATH_OPERATOR
+  public static boolean mathop(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "mathop")) return false;
+    if (!nextTokenIs(b, MATH_OPERATOR)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, MATH_OPERATOR);
+    exit_section_(b, m, MATHOP, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // NUM
   public static boolean number(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "number")) return false;
@@ -202,22 +214,22 @@ public class VoxaScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // VAR_TOKEN WHITE_SPACE KEY EQALS VALUE? SEMICOLON
+  // VAR_TOKEN VAR_CHARACTER EQUALS VALUE? SEMICOLON
   public static boolean var(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "var")) return false;
     if (!nextTokenIs(b, VAR_TOKEN)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, VAR_TOKEN, WHITE_SPACE, KEY, EQALS);
-    r = r && var_4(b, l + 1);
+    r = consumeTokens(b, 0, VAR_TOKEN, VAR_CHARACTER, EQUALS);
+    r = r && var_3(b, l + 1);
     r = r && consumeToken(b, SEMICOLON);
     exit_section_(b, m, VAR, r);
     return r;
   }
 
   // VALUE?
-  private static boolean var_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "var_4")) return false;
+  private static boolean var_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "var_3")) return false;
     consumeToken(b, VALUE);
     return true;
   }

@@ -66,15 +66,16 @@ public class VoxaScriptLexer implements FlexLexer {
   private static final int [] ZZ_CMAP_BLOCKS = zzUnpackcmap_blocks();
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
-    "\11\0\1\1\1\2\1\3\1\4\1\5\22\0\1\1"+
-    "\1\6\1\7\2\0\2\6\3\0\1\10\1\6\1\11"+
-    "\1\6\1\0\1\12\12\13\1\0\1\14\1\6\1\15"+
-    "\1\6\4\0\1\16\2\0\1\17\2\0\1\20\4\0"+
-    "\1\21\1\22\1\23\1\0\1\24\1\0\1\25\1\26"+
-    "\6\0\1\27\1\0\1\6\4\0\1\16\2\0\1\17"+
-    "\2\0\1\20\4\0\1\21\1\22\1\23\1\0\1\24"+
-    "\1\0\1\25\1\26\6\0\1\6\10\0\1\3\252\0"+
-    "\2\20\u01f6\0\2\3\326\0\u0100\3";
+    "\11\0\1\1\1\2\1\3\1\4\1\5\22\0\1\6"+
+    "\1\7\1\10\2\0\2\7\3\0\1\11\1\7\1\12"+
+    "\1\7\1\0\1\13\12\0\1\14\1\0\1\7\1\15"+
+    "\1\7\2\0\1\16\1\0\1\17\2\0\1\20\2\0"+
+    "\1\21\4\0\1\22\1\23\1\24\1\0\1\25\1\0"+
+    "\1\26\1\27\1\30\4\0\1\31\1\32\1\33\1\34"+
+    "\2\0\1\16\1\0\1\17\2\0\1\20\2\0\1\21"+
+    "\4\0\1\22\1\23\1\24\1\0\1\25\1\0\1\26"+
+    "\1\27\1\30\4\0\1\35\1\7\1\36\7\0\1\3"+
+    "\252\0\2\21\u01f6\0\2\3\326\0\u0100\3";
 
   private static int [] zzUnpackcmap_blocks() {
     int [] result = new int[1280];
@@ -101,12 +102,14 @@ public class VoxaScriptLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\2\0\1\1\1\2\1\3\1\1\1\4\1\3\1\5"+
-    "\1\6\1\3\3\1\1\0\1\7\4\0\1\10\2\0"+
-    "\3\11\1\10\1\0\1\12\1\13\5\0";
+    "\2\0\1\1\1\2\1\1\1\3\1\1\1\4\1\3"+
+    "\1\5\1\6\4\1\1\5\1\7\1\10\3\0\2\1"+
+    "\1\3\1\1\1\11\3\1\1\12\2\0\1\1\2\0"+
+    "\3\13\1\0\1\11\1\1\1\14\1\1\1\0\1\15"+
+    "\1\13\1\16\3\1\1\15\5\1\1\17";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[35];
+    int [] result = new int[57];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -131,14 +134,17 @@ public class VoxaScriptLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\30\0\60\0\110\0\60\0\140\0\60\0\170"+
-    "\0\220\0\60\0\250\0\300\0\330\0\360\0\140\0\60"+
-    "\0\u0108\0\u0120\0\u0138\0\u0150\0\60\0\u0168\0\u0180\0\60"+
-    "\0\u0138\0\u0198\0\u01b0\0\u01c8\0\60\0\60\0\u01e0\0\u01f8"+
-    "\0\u0210\0\u0228\0\u0240";
+    "\0\0\0\37\0\76\0\135\0\174\0\76\0\233\0\76"+
+    "\0\272\0\331\0\370\0\u0117\0\u0136\0\u0155\0\u0174\0\u0193"+
+    "\0\u01b2\0\76\0\u0193\0\u01d1\0\u01f0\0\u020f\0\u022e\0\331"+
+    "\0\u024d\0\76\0\u026c\0\u028b\0\u02aa\0\331\0\u02c9\0\u02e8"+
+    "\0\u0307\0\u0326\0\u0345\0\331\0\u0345\0\u0364\0\u0383\0\u03a2"+
+    "\0\u03c1\0\76\0\u03e0\0\u03ff\0\76\0\u041e\0\331\0\u043d"+
+    "\0\u045c\0\u047b\0\331\0\u049a\0\u04b9\0\u04d8\0\u04f7\0\u0516"+
+    "\0\76";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[35];
+    int [] result = new int[57];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -161,19 +167,61 @@ public class VoxaScriptLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpacktrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\3\2\4\1\3\2\4\1\5\1\6\1\5\1\7"+
-    "\1\10\1\11\1\12\1\13\1\3\1\14\1\15\2\3"+
-    "\1\16\34\3\31\0\2\4\1\0\2\4\22\0\7\17"+
-    "\1\20\17\17\1\21\10\0\1\22\1\0\1\23\30\0"+
-    "\1\11\31\0\1\5\40\0\1\24\20\0\1\25\34\0"+
-    "\1\26\3\0\2\17\4\0\22\17\10\22\1\27\17\22"+
-    "\2\23\1\30\1\23\1\31\1\32\22\23\21\0\1\33"+
-    "\26\0\1\34\7\0\12\22\1\35\15\22\2\0\1\36"+
-    "\43\0\1\37\32\0\1\40\33\0\1\41\27\0\1\25"+
-    "\22\0\1\42\31\0\1\43\26\0\1\25\6\0";
+    "\1\3\2\4\1\3\1\4\1\5\1\4\1\6\1\7"+
+    "\1\6\1\10\1\11\1\12\1\13\2\3\1\14\1\15"+
+    "\2\3\1\16\3\3\1\17\1\3\1\20\1\3\1\6"+
+    "\1\21\1\22\37\12\1\3\2\0\1\3\1\0\1\3"+
+    "\1\0\5\3\2\0\14\3\1\23\4\3\1\0\2\4"+
+    "\1\0\3\4\30\0\1\3\2\4\1\3\1\4\1\5"+
+    "\1\4\5\3\2\0\14\3\1\23\4\3\1\7\2\24"+
+    "\1\7\1\24\1\7\1\24\1\7\1\3\3\7\2\24"+
+    "\14\7\1\25\4\7\1\3\2\0\1\3\1\0\1\3"+
+    "\1\0\2\3\1\26\1\3\1\27\2\0\14\3\1\23"+
+    "\4\3\54\0\1\30\21\0\1\3\2\0\1\3\1\0"+
+    "\1\3\1\0\5\3\2\0\11\3\1\31\2\3\1\23"+
+    "\5\3\2\0\1\3\1\0\1\3\1\0\5\3\2\0"+
+    "\2\3\1\32\11\3\1\23\5\3\2\0\1\3\1\0"+
+    "\1\3\1\0\5\3\2\0\7\3\1\33\4\3\1\23"+
+    "\5\3\2\0\1\3\1\0\1\3\1\0\5\3\2\0"+
+    "\1\34\13\3\1\23\4\3\6\0\1\3\30\0\1\3"+
+    "\2\0\1\3\1\0\1\3\1\0\5\3\2\0\13\3"+
+    "\1\35\1\23\4\3\10\24\1\36\21\24\1\37\6\24"+
+    "\4\0\1\7\30\24\1\26\2\40\1\26\1\40\1\26"+
+    "\1\40\2\26\1\41\2\26\2\40\14\26\1\42\4\26"+
+    "\1\27\1\43\1\44\1\27\1\45\1\46\1\43\5\27"+
+    "\2\43\14\27\1\47\4\27\1\3\2\0\1\3\1\0"+
+    "\1\3\1\0\5\3\2\0\4\3\1\50\7\3\1\23"+
+    "\5\3\2\0\1\3\1\0\1\3\1\0\5\3\2\0"+
+    "\3\3\1\51\10\3\1\23\5\3\2\0\1\3\1\0"+
+    "\1\3\1\0\5\3\2\0\7\3\1\52\4\3\1\23"+
+    "\5\3\2\0\1\3\1\0\1\3\1\0\5\3\2\0"+
+    "\14\3\1\23\1\3\1\53\2\3\2\24\4\0\31\24"+
+    "\11\40\1\54\25\40\1\26\2\40\1\26\1\40\1\26"+
+    "\1\40\4\26\1\55\2\40\14\26\1\42\4\26\6\40"+
+    "\1\26\2\40\1\54\25\40\2\43\1\44\1\43\1\45"+
+    "\1\56\31\43\1\3\1\0\1\57\1\3\1\0\1\3"+
+    "\1\0\5\3\2\0\14\3\1\23\4\3\2\43\1\44"+
+    "\1\43\1\45\1\56\1\27\30\43\1\3\2\0\1\3"+
+    "\1\0\1\3\1\0\5\3\2\0\1\3\1\60\12\3"+
+    "\1\23\5\3\2\0\1\3\1\0\1\3\1\0\5\3"+
+    "\2\0\4\3\1\61\7\3\1\23\5\3\2\0\1\3"+
+    "\1\0\1\3\1\0\5\3\2\0\14\3\1\23\3\3"+
+    "\1\62\13\40\1\63\23\40\2\0\1\57\34\0\1\3"+
+    "\2\0\1\3\1\0\1\3\1\0\5\3\2\0\10\3"+
+    "\1\64\3\3\1\23\5\3\2\0\1\3\1\0\1\3"+
+    "\1\0\5\3\2\0\10\3\1\32\3\3\1\23\5\3"+
+    "\2\0\1\3\1\0\1\3\1\0\5\3\2\0\14\3"+
+    "\1\23\1\65\4\3\2\0\1\3\1\0\1\3\1\0"+
+    "\5\3\2\0\3\3\1\66\10\3\1\23\5\3\2\0"+
+    "\1\3\1\0\1\3\1\0\2\3\1\67\2\3\2\0"+
+    "\14\3\1\23\5\3\2\0\1\3\1\0\1\3\1\0"+
+    "\5\3\2\0\5\3\1\70\6\3\1\23\5\3\2\0"+
+    "\1\3\1\0\1\3\1\0\5\3\2\0\14\3\1\23"+
+    "\3\3\1\71\1\3\2\0\1\3\1\0\1\3\1\0"+
+    "\5\3\2\0\4\3\1\32\7\3\1\23\4\3";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[600];
+    int [] result = new int[1333];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -211,12 +259,12 @@ public class VoxaScriptLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\2\0\1\11\1\1\1\11\1\1\1\11\2\1\1\11"+
-    "\4\1\1\0\1\11\4\0\1\11\2\0\1\11\3\1"+
-    "\1\0\2\11\5\0";
+    "\2\0\7\1\1\11\10\1\3\0\2\1\1\11\5\1"+
+    "\1\11\2\0\1\1\2\0\1\11\2\1\1\0\4\1"+
+    "\1\0\2\1\1\11\3\1\1\11\6\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[35];
+    int [] result = new int[57];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -540,66 +588,86 @@ public class VoxaScriptLexer implements FlexLexer {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { return TokenType.BAD_CHARACTER;
+            { return VoxaScriptTypes.VAR_CHARACTER;
             }
           // fall through
-          case 12: break;
+          case 16: break;
           case 2:
             { return TokenType.WHITE_SPACE;
             }
           // fall through
-          case 13: break;
+          case 17: break;
           case 3:
-            { return VoxaScriptTypes.SEPARATOR;
+            { return VoxaScriptTypes.MATH_OPERATOR;
             }
           // fall through
-          case 14: break;
+          case 18: break;
           case 4:
             { return VoxaScriptTypes.COMMA;
             }
           // fall through
-          case 15: break;
+          case 19: break;
           case 5:
-            { return VoxaScriptTypes.NUM;
+            { return TokenType.BAD_CHARACTER;
             }
           // fall through
-          case 16: break;
+          case 20: break;
           case 6:
-            { return VoxaScriptTypes.SEMICOLON;
+            { return VoxaScriptTypes.EQUALS;
             }
           // fall through
-          case 17: break;
+          case 21: break;
           case 7:
-            { return VoxaScriptTypes.TEXT;
+            { return VoxaScriptTypes.BLOCK_START;
             }
           // fall through
-          case 18: break;
+          case 22: break;
           case 8:
+            { return VoxaScriptTypes.BLOCK_END;
+            }
+          // fall through
+          case 23: break;
+          case 9:
             { return VoxaScriptTypes.DEFAULT_FUN;
             }
           // fall through
-          case 19: break;
-          case 9:
+          case 24: break;
+          case 10:
+            { return VoxaScriptTypes.TEXT;
+            }
+          // fall through
+          case 25: break;
+          case 11:
             // lookahead expression with fixed lookahead length
             zzMarkedPos = Character.offsetByCodePoints
                 (zzBufferL, zzMarkedPos, -1);
             { return VoxaScriptTypes.COMMENT;
             }
           // fall through
-          case 20: break;
-          case 10:
+          case 26: break;
+          case 12:
+            { return VoxaScriptTypes.VAR_TOKEN;
+            }
+          // fall through
+          case 27: break;
+          case 13:
             { return VoxaScriptTypes.COMMENT;
             }
           // fall through
-          case 21: break;
-          case 11:
+          case 28: break;
+          case 14:
             // lookahead expression with fixed lookahead length
             zzMarkedPos = Character.offsetByCodePoints
                 (zzBufferL, zzMarkedPos, -2);
             { return VoxaScriptTypes.COMMENT;
             }
           // fall through
-          case 22: break;
+          case 29: break;
+          case 15:
+            { return VoxaScriptTypes.CODE_BLOCK;
+            }
+          // fall through
+          case 30: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

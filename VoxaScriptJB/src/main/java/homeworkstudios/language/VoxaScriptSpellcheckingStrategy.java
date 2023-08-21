@@ -53,7 +53,7 @@ public class VoxaScriptSpellcheckingStrategy extends SpellcheckingStrategy {
 
         public void tokenize(@NotNull VoxaScriptProperty element, TokenConsumer consumer) {
             //Spell check the keys and values of properties with different splitters
-            final ASTNode key = element.getNode().findChildByType(VoxaScriptTypes.KEY);
+            final ASTNode key = element.getNode().findChildByType(VoxaScriptTypes.VAR_CHARACTER);
             if (key != null && key.getTextLength() > 0) {
                 final PsiElement keyPsi = key.getPsi();
                 final String text = key.getText();

@@ -24,12 +24,15 @@ blockend ::= BLOCK_END
 paramstart ::= PARAM_START
 paramend ::= PARAM_END
 codeblock ::= CODE_BLOCK
+mathop ::= MATH_OPERATOR
 
 VoxaScriptFile ::= item_*
 
 private item_ ::= (var|COMMENT|CRLF)
 
-var ::= (VAR_TOKEN WHITE_SPACE KEY EQALS VALUE? SEMICOLON)
+var ::= (VAR_TOKEN VAR_CHARACTER EQUALS VALUE? SEMICOLON)
+
+
 
 property ::= (KEY? SEPARATOR VALUE?) | KEY {
   mixin="homeworkstudios.language.psi.impl.VoxaScriptNamedElementImpl"

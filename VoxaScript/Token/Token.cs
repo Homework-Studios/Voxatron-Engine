@@ -1,4 +1,5 @@
-﻿using VoxaScript.Error;
+﻿using System.Globalization;
+using VoxaScript.Error;
 
 namespace VoxaScript.Token;
 
@@ -195,7 +196,7 @@ public class Token
 
     public int AsInt()
     {
-        return int.Parse(Value);
+        return int.Parse(Value, CultureInfo.InvariantCulture.NumberFormat);
     }
 
     public bool IsFloat()
@@ -205,7 +206,7 @@ public class Token
 
     public float AsFloat()
     {
-        return float.Parse(Value);
+        return float.Parse(Value, CultureInfo.InvariantCulture.NumberFormat);
     }
 
     public bool IsIdentifier()

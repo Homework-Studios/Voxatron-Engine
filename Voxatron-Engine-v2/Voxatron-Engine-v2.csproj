@@ -19,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="res\icon\images\" />
       <Folder Include="Runtime\" />
     </ItemGroup>
 

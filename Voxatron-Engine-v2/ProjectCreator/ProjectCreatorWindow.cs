@@ -1,26 +1,57 @@
-﻿using System.IO.Pipes;
+﻿using System.Diagnostics;
 using System.Numerics;
+using System.Timers;
 using ImGuiNET;
+using NativeFileDialogSharp;
 using Raylib_cs;
 using rlImGui_cs;
-using NativeFileDialogSharp;
 using Voxatron_Engine_v2.Editor;
 using static Raylib_cs.Raylib;
+using Timer = System.Timers.Timer;
 
 namespace Voxatron_Engine_v2.ProjectCreator;
 
 public class ProjectCreatorWindow : IWindow
 {
-    public bool IsOpen { get; set; }
+    public enum UiView
+    {
+        Main,
+        NewProject,
+        LoadProject
+    }
+
+    public UiView CurrentUiView = UiView.Main;
+
+    public string LoadLocation = "";
+    public string projectLocation = "";
+
+    public string projectName = "";
+
+    public string?[] recentProjects = { };
+
+    public string recentProjectsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
+                                       "\\Voxatron-Engine\\Projects\\";
+
+    public bool ValidLoadPath;
+    public bool validPath;
+
+    public ImGuiWindowFlags WindowFlags = ImGuiWindowFlags.NoDocking | ImGuiWindowFlags.NoCollapse |
+                                          ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove |
+                                          ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
 
     public string WindowTitle = "Voxatron Engine - Project Creator";
-    public ImGuiWindowFlags WindowFlags = ImGuiWindowFlags.NoDocking | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
-
-    public enum UiView { Main, NewProject, LoadProject }
-    public UiView CurrentUiView = UiView.Main;
+    public bool IsOpen { get; set; }
     
-    public string?[] recentProjects = {};
-    public string recentProjectsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Voxatron-Engine\\Projects\\";
+    private unsafe Image[] _icons = new Image[40];
+    private int _index = 0;
+    
+    public void IconTimerTick(object? sender, ElapsedEventArgs elapsedEventArgs)
+    {
+        
+        SetWindowIcon(_icons[_index]);
+        _index++;
+        _index %= _icons.Length;
+    }
     
     public void Open()
     {
@@ -30,117 +61,133 @@ public class ProjectCreatorWindow : IWindow
         SetConfigFlags(ConfigFlags.FLAG_WINDOW_UNDECORATED);
         SetConfigFlags(ConfigFlags.FLAG_WINDOW_TRANSPARENT);
         InitWindow(720, 470, WindowTitle);
-        
+        // file format is 0000.png 0001.png 0002.png ... 0010.png ... 9999.png
+        for (int i = 0; i < _icons.Length; i++)
+        {
+            var a = i*3+1;
+            var framecount = a.ToString().PadLeft(4, '0');
+            Console.WriteLine(framecount);
+            _icons[i]=LoadImage(
+                "../../../res/icon/images/"+framecount+".png");
+        }
+
+        Timer timer = new(150);timer.Elapsed += IconTimerTick;
+        timer.AutoReset = true;
+       timer.Enabled = true;
+
         // load all the folder names in the recent projects folder but just the last folders name should be shown
         recentProjects = Directory.GetDirectories(recentProjectsPath);
         // loop over
-        for (int i = 0; i < recentProjects.Length; i++)
-        {
+        for (var i = 0; i < recentProjects.Length; i++)
             // get the last folder name
             recentProjects[i] = recentProjects[i].Split('\\')[recentProjects[i].Split('\\').Length - 1];
-        }
-        
+
         // loop over them and remove those who do not have a *.voxatron.yml 
         // * could be anything, but it should be the project name
-        for (int i = 0; i < recentProjects.Length; i++)
-        {
+        for (var i = 0; i < recentProjects.Length; i++)
             if (!File.Exists(recentProjectsPath + recentProjects[i] + "\\" + recentProjects[i] + ".voxatron.yml"))
-            {
                 recentProjects[i] = null;
-            }
-        }
-        
+
         rlImGui.Setup();
         ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 5);
         ImGui.PushStyleVar(ImGuiStyleVar.FrameRounding, 5);
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(12, 12));
         Run();
-        
+    }
+
+    public void Run()
+    {
+        while (IsOpen)
+        {
+            BeginDrawing();
+            ClearBackground(Color.BLANK);
+
+            UI();
+
+            EndDrawing();
+        }
+
+        rlImGui.End();
+    }
+
+    public void Close()
+    {
+        IsOpen = false;
+        CloseWindow();
     }
 
     public void MainUiView()
     {
         // Create new project button
-        if (ImGui.Button("Create new project"))
-        {
-            CurrentUiView = UiView.NewProject;
-        }
-            
+        if (ImGui.Button("Create new project")) CurrentUiView = UiView.NewProject;
+
         ImGui.SameLine();
-            
+
         // Load project button
-        if (ImGui.Button("Load project"))
-        {
-            CurrentUiView = UiView.LoadProject;
-        }
-            
+        if (ImGui.Button("Load project")) CurrentUiView = UiView.LoadProject;
+
         // Clickable recent projects
         ImGui.Text("Recent projects:");
-            
+
         // List of recent projects
         ImGui.BeginChild("Recent projects", new Vector2(0, 0), true);
-        foreach (string? recentProject in recentProjects)
+        foreach (var recentProject in recentProjects)
         {
-            if(recentProject == null) continue;
+            if (recentProject == null) continue;
             if (ImGui.Selectable(recentProject))
             {
                 ImGui.EndChild();
-                Project project = Project.Load(recentProjectsPath + recentProject);
+                var project = Project.Load(recentProjectsPath + recentProject);
                 Close();
-                EditorWindow editorWindow = new EditorWindow(project);
+                var editorWindow = new EditorWindow(project);
                 editorWindow.Open();
                 return;
             }
         }
+
         ImGui.EndChild();
     }
-    
+
     public void ReturnToMainButton()
     {
-        if (ImGui.Button("Return to Main Menu"))
-        {
-            CurrentUiView = UiView.Main;
-        }
+        if (ImGui.Button("Return to Main Menu")) CurrentUiView = UiView.Main;
     }
-    
-    public string projectName = "";
-    public string projectLocation = "";
-    public bool validPath = false;
-    
+
     public void NewProjectUiView()
     {
         ReturnToMainButton();
 
         // Input name
         // input location
-        
+
         ImGui.Spacing();
         if (ImGui.InputText("Project Name", ref projectName, 100))
         {
             // change the folder location at C:\Users\{user}\Documents\Voxatron-Engine\Projects\{projectName}
-            projectLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Voxatron-Engine\\Projects\\" + projectName;
-            
-            if(projectName == "")
+            projectLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
+                              "\\Voxatron-Engine\\Projects\\" + projectName;
+
+            if (projectName == "")
                 projectLocation = "";
         }
 
         ImGui.Spacing();
         ImGui.InputText("Project Location", ref projectLocation, 100);
-        
+
         ImGui.SameLine();
         if (ImGui.Button("Choose"))
         {
             // Open file dialog
             var result = Dialog.FolderPicker();
-            
+
             // Set location to result
             projectLocation = result.Path;
             // Set the Name to the last folder in the path
             projectName = result.Path.Split('\\')[result.Path.Split('\\').Length - 1];
         }
-        
+
         ImGui.Spacing();
-        
+
         // check if the path is valid if not add a error message
         if (projectLocation == "")
         {
@@ -170,67 +217,55 @@ public class ProjectCreatorWindow : IWindow
         {
             validPath = true;
         }
-        
+
         ImGui.PopStyleColor();
-        
+
         ImGui.Spacing();
-        
+
         // Create project button
         if (validPath)
-        {
             if (ImGui.Button("Create project"))
             {
-                Project project = new Project { ProjectName = projectName, ProjectPath = projectLocation };
+                var project = new Project { ProjectName = projectName, ProjectPath = projectLocation };
                 FileGenerator.FileGenerator.GenerateProjectDefault(project);
                 Close();
-                EditorWindow editorWindow = new EditorWindow(project);
+                var editorWindow = new EditorWindow(project);
                 editorWindow.Open();
             }
-        }
     }
-    
-    public string LoadLocation = "";
-    public bool ValidLoadPath = false;
 
     public bool TestValidLoadPath()
     {
         if (Directory.Exists(LoadLocation) && Directory.GetFiles(LoadLocation, "*.voxatron.yml").Length != 0)
-        {
             return true;
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
-    
+
     public void LoadProjectUiView()
     {
         ReturnToMainButton();
-        
+
         // Input location
         if (ImGui.InputText("Location", ref LoadLocation, 100))
-        {
             // check if the path contains a *.voxatron.yml file
             // star means it can be anything
             ValidLoadPath = TestValidLoadPath();
-        }
-        
+
         // Choose button
         ImGui.SameLine();
         if (ImGui.Button("Choose"))
         {
             // Open file dialog
             var result = Dialog.FolderPicker();
-            
+
             // Set location to result
             LoadLocation = result.Path;
-            
+
             // check if the path contains a *.voxatron.yml file
             // star means it can be anything
             ValidLoadPath = TestValidLoadPath();
         }
-        
+
         ImGui.Spacing();
         // check if the path is valid if not add a error message
         if (LoadLocation == "")
@@ -266,32 +301,29 @@ public class ProjectCreatorWindow : IWindow
 
         // Load project button
         if (ValidLoadPath)
-        {
             if (ImGui.Button("Load project"))
             {
                 // Open project
                 // Close window
                 // Open editor
-                Project project = Project.Load(LoadLocation);
+                var project = Project.Load(LoadLocation);
                 Close();
-                EditorWindow editorWindow = new EditorWindow(project);
+                var editorWindow = new EditorWindow(project);
                 editorWindow.Open();
             }
-        }
     }
 
     public void UI()
     {
         rlImGui.Begin();
-        
+
         // fullscreen
         ImGui.SetNextWindowPos(new Vector2(0, 0));
         ImGui.SetNextWindowSize(new Vector2(GetScreenWidth(), GetScreenHeight()));
-        
-        bool isOpen = IsOpen;
-        
+
+        var isOpen = IsOpen;
+
         if (ImGui.Begin(WindowTitle, ref isOpen, WindowFlags))
-        {
             switch (CurrentUiView)
             {
                 case UiView.Main:
@@ -302,37 +334,13 @@ public class ProjectCreatorWindow : IWindow
                     break;
                 case UiView.LoadProject:
                     LoadProjectUiView();
-                    break;    
+                    break;
             }
-        }
         else
-        {
             IsOpen = false;
-        }
 
         IsOpen = isOpen;
-        
-        rlImGui.End();
-    }
 
-    public void Run()
-    {
-        while (IsOpen)
-        {
-            BeginDrawing();
-            ClearBackground(Color.BLANK);
-            
-            UI();
-            
-            EndDrawing();
-        }
-        
         rlImGui.End();
-    }
-
-    public void Close()
-    {
-        IsOpen = false;
-        CloseWindow();
     }
 }

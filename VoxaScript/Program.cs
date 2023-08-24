@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic.CompilerServices;
-using VoxaScript.Enviroment;
+﻿using VoxaScript.Enviroment;
 
 var enviroment = new Enviroment();
 
@@ -7,7 +6,7 @@ if (args.Length > 0 && args[0] == "--debug")
 {
 }
 
-var comments = new[] {"exit", "new", "run"};
+var comments = new[] { "exit", "new", "run" };
 
 // Green font color
 Console.ForegroundColor = ConsoleColor.Green;
@@ -51,7 +50,7 @@ while (true)
                     }
                     else
                     {
-                        if(c[0] == "run")
+                        if (c[0] == "run")
                         {
                             var goUpDirs = "../../../Scripts/";
                             var path = goUpDirs + c[1];
@@ -64,13 +63,29 @@ while (true)
                             }
                         }
                     }
+
                     break;
+                case ConsoleKey.UpArrow:
+                    break;
+                case ConsoleKey.DownArrow:
+                    break;
+                /*
+                 not working cause of remove key (backspace) rework that first
+                case ConsoleKey.LeftArrow:
+                    if (Console.CursorLeft > 3)
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                    break;
+                case ConsoleKey.RightArrow:
+                    if (Console.CursorLeft < consoleLine.Length + 3)
+                        Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+                    break;
+                */
                 default:
                     consoleLine += readKey.KeyChar;
                     Console.Write(readKey.KeyChar);
                     break;
             }
-            
+
             readKey = Console.ReadKey(true);
         }
 
